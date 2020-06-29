@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, shrink-to-fit=no">
+  <title>Dashboard - 3TPT</title>
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/android-chrome-512x512.png">
+  <link rel="icon" type="image/jpeg" sizes="440x332" href="/img/5ton.jpg">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+  <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/css/Data-Table-1.css">
+  <link rel="stylesheet" href="/css/Data-Table.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/r-2.2.3/datatables.min.css" />
+  <style>
+    
+    
+    /* for iOS modal scrolling issue */
+    .modal {
+    -webkit-overflow-scrolling: auto
+}
+    .signature {
+      border: 1px solid black;
+      width: 70%;
+      margin: auto;
+      display: block;
+    }
+
+    /* Center the loader */
+
+    #loader {
+      position: absolute;
+      left: 55%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    pre {
+    white-space: pre-line;       /* Since CSS 2.1 */
+    white-space: -moz-pre-line;  /* Mozilla, since 1999 */
+    white-space: -pre-line;      /* Opera 4-6 */
+    white-space: -o-pre-line;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+    
+    /* Add animation to "page content" */
+
+    .animate-bottom {
+      position: relative;
+      -webkit-animation-name: animatebottom;
+      -webkit-animation-duration: 1s;
+      animation-name: animatebottom;
+      animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0px;
+        opacity: 1
+      }
+    }
+
+    @keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0;
+        opacity: 1
+      }
+    }
+
+    .modal-pane {
+      width: 100%;
+      flex: 0 0 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      padding: 6px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    #modal-create-rac-panes {
+      transition: transform 0.8s ease-in-out;
+    }
+
+    .modal-pane::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    /*https://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box*/
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      /* Firefox */
+    }
+
+    #content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media(max-width: 768px) {
+      #wrapper {
+        height: 80vh;
+      }
+    }
+    
+    #complete-rac {
+      margin-top: 10px
+    }
+    
+    .btn-genqr{
+      margin-top: 10px
+    }
+    
+    .div-genqr{
+      display: none;
+    }
+    .QRCode
+    {
+      display: none;
+    }
+     @media (max-width: @screen-xs-min) {
+  .modal-xs { width: @modal-sm; }
+ }
+  </style>
+</head>
+
+<body id="page-top" class="sidebar-toggled">
+  <div id="wrapper" class="animate-bottom">
+    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 toggled" id="nav-bar">
+      <div class="container-fluid d-flex flex-column p-0">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0 nav-link-history disabled" href="index" id="nav-brand">
+          <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-truck-moving"></i></div>
+          <div class="sidebar-brand-text mx-3"><span>3TPT</span></div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <ul class="nav navbar-nav text-light" id="accordionSidebar">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active">
+            <!--<a class="nav-link nav-link-history disabled" href="detail" id="nav-detail">-->
+              <i class="fas fa-car-side"></i>
+              <span>MT-RAC</span>
+            </a>
+          </li>
+        </ul>
+        <div class="text-center d-none d-md-inline">
+          <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+        </div>
+      </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper" style="height:100vh">
+      <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top" style="flex: 0 0 auto;">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav flex-nowrap ml-auto">
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item dropdown no-arrow" role="presentation">
+              <div class="nav-item dropdown no-arrow">
+                <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="">
+                  <span class="d-lg-inline mr-2 text-gray-600 small" id="name-holder"></span>
+                  <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-truck-moving"></i></div>
+                </a>
+                <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
+                  <a class="dropdown-item" role="presentation" href="logout">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    &nbsp;Logout
+                  </a>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="content" style="flex: 1 1 0;">
+        <!--Index Page -->
+        <div id="page-index" class="container-fluid page currentPage d-none">
+          <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark mb-0">Dashboard (Placeholder)</h3>
+          </div>
+          
+          <div class="my-auto">
+            
+            <div id="demo" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ul class="carousel-indicators">
+              <li data-target="#demo" data-slide-to="0" class="active"></li>
+              <li data-target="#demo" data-slide-to="1"></li>
+            </ul>
+            <!-- The slideshow -->
+            <div class="carousel-inner" role="listbox" style="width:100%; !important;">
+              <div class="carousel-item active">
+                <img class="img-fluid" src="https://www.mindef.gov.sg/web/wcm/connect/army/34b5dbb6-da55-4da5-8082-dfb29ca4aa91/Transport.jpg?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_1QK41482L8HD90QOSSLBSG3000-34b5dbb6-da55-4da5-8082-dfb29ca4aa91-mo-rZ4f" alt="">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Placeholder image</h5>
+                  <p>This is a test image</p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img class="img-fluid" src="https://www.mindef.gov.sg/web/wcm/connect/army/34b5dbb6-da55-4da5-8082-dfb29ca4aa91/Transport.jpg?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_1QK41482L8HD90QOSSLBSG3000-34b5dbb6-da55-4da5-8082-dfb29ca4aa91-mo-rZ4f" alt="">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Placeholder image 2</h5>
+                  <p>This is another test image</p>
+                </div>
+              </div>
+            </div>
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+          </div>
+          </div>
+          
+        </div>
+
+        <!--Details Page-->
+        <div id="page-detail" class=" page" style="height: 100%;padding:0 0.5vw">
+
+          <div class="card shadow" style="height: 100%;">
+            <div class="card-header py-3">
+              <p class="text-primary m-0 font-weight-bold">MT-RAC Forms</p>
+            </div>
+            <div class="card-body" style="overflow-y: scroll;flex: 1 1 0;">
+              <div class="row">
+              </div>
+              <div class="table-responsive table mt-2" id="userDetailTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="userDetailTableInner">
+                  <thead>
+                    <tr>
+                      <th>Date Start</th>
+                      <th>Detail ID</th>
+                      <th>Veh No.</th>
+                      <th>Risk</th>
+                      <th>MT-RAC</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td><strong>Date Start</strong></td>
+                      <td><strong>Detail ID</strong></td>
+                      <td><strong>Veh No.</strong></td>
+                      <td><strong>Risk</strong></td>
+                      <td><strong>MT-RAC</strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="bg-white sticky-footer" style="flex: 0 0 auto;">
+        <div class="container my-auto">
+          <div class="text-center my-auto copyright"><span>Copyright © 3TPT NSFC 2020</span></div>
+        </div>
+      </footer>
+    </div>
+    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+  </div>
+
+    <!-- View RAC Modal -->
+  <div id="racModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rac-modal-title" style="font-weight:bold"></h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" id="rac-modal-body">
+          <table class="table table-borderless" id="rac-modal-table">
+            <tbody id = "rac-modal-table-body">
+            </tbody>
+          </table>
+          
+         <h5 style="margin-left:5px">TO Checklist</h5>
+         <table class="table dataTable my-0" id="viewtochecklist">
+              <thead>
+                <tr>
+                  <th colspan="2">Description</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                    <tr>
+                      <td colspan="2">Ensure no admin movement during no-move timings (0730-0930 hrs / 1730-1930 hrs)</td>
+                      <td style="position: relative;">
+                        <input class="viewtocheckbox" type="checkbox" value="" disabled>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Brief and ensure troops secure their seat belts before movement of vehicle</td>
+                      <td style="position: relative;">
+                        <input class="viewtocheckbox" type="checkbox" value="" disabled>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Check and ensure safety straps in place and tailboard of vehicle is closed</td>
+                      <td style="position: relative;">
+                        <input class="viewtocheckbox" type="checkbox" value="" disabled>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Brief troops on no sleeping / smoking on the vehicle before movement of vehicle</td>
+                      <td style="position: relative;">
+                        <input class="viewtocheckbox" type="checkbox" value="" disabled>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Secure load before movement of vehicle</td>
+                      <td style="position: relative;">
+                        <input class="viewtocheckbox" type="checkbox" value="" disabled>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">If involved in an accident, to contact parent unit, Transport Node and Police</td>
+                      <td style="position: relative;">
+                        <input class="viewtocheckbox" type="checkbox" value="" disabled>
+                      </td>
+                    </tr>
+                  </tbody>
+            </table>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+      <!-- View qr Modal (endorse) -->
+  <div id="qrModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xs" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="qr-modal-title" style="font-weight:bold"></h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" id="qr-modal-body">
+
+          
+          <div class="modal-pane" style="text-align: center;">
+              
+              
+              <div class="btn-group btn-toolbar btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-secondary btn-group-qr" id="officerqr" onclick="clickQRRadio('officerqr')">
+                  <input type="radio" name="options" checked > Countersigning Officer
+                </label>
+                <label class="btn btn-outline-secondary btn-group-qr" id="vcomqr" onclick="clickQRRadio('vcomqr')">
+                  <input type="radio" name="options"> V.Comm / F.Passenger
+                </label>
+                <label class="btn btn-outline-secondary btn-group-qr" id="dpqr" onclick="clickQRRadio('dpqr')">
+                  <input type="radio" name="options"> Dispatcher / Releaser
+                </label>
+              </div>
+              
+              <div id="officerqrdiv" class="div-genqr">
+                <button id="officerqrbtn" class="btn btn-success btn-genqr" name="officer">Generate QR</button>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <canvas id="officerQR" class="QRCode"></canvas>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <p id="officerqrtext" class="qrtext"></p>
+                </div>
+              </div>
+              
+              <div id="vcomqrdiv" class="div-genqr">
+                <button id="vcomqrbtn" class="btn btn-success btn-genqr" name="vcom">Generate QR</button>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <canvas id="vcomQR" class="QRCode"></canvas>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <p id="vcomqrtext" class="qrtext"></p>
+                </div>
+              </div>
+              
+              <div id="dpqrdiv" class="div-genqr">
+                <button id="dpqrbtn" class="btn btn-success btn-genqr" name="dp">Generate QR</button>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <canvas id="dpQR" class="QRCode"></canvas>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <p id="dpqrtext" class="qrtext"></p>
+                </div>
+              </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+    </div>
+  
+  <div id="modal-create-rac" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create MT-RAC</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="max-height:100%;padding:0;overflow: hidden;">
+          <div id="modal-create-rac-panes" style="transform: translateX(0);width: 100%;height: 100%;display: flex; flex-direction: row;">
+            <div class="modal-pane"
+              style="background-color:#4e73df;color: #FFF;justify-content: center;text-align: center;">
+              Follow the steps to create an MT-RAC
+              <div>
+                <button class="btn btn-nextPane">
+                  <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem; color:#FFF;"></i>
+                </button>                
+              </div>
+            </div>
+
+            <div class="modal-pane" style="text-align: center;">
+              <h5> Journey Information </h5>
+              <form class="needs-validation" novalidate>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <input type="text" class="form-control" name="detailid" placeholder="Detail ID" min="1000000000" max="9999999999" pattern="\d*" maxlength="10"  required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="journeyfrom" placeholder="Journey From" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="journeyto" placeholder="Journey To" required>
+                  </div>
+                </div>
+
+                <h5> Vehicle Information </h5>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input type="text" class="form-control" name="vehno" placeholder="Vehicle No." min="10000" max="99999" pattern="\d*" maxlength="5" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <input type="text" class="form-control" id="vehavi" name="vehavi" placeholder="Last AVI Date" readonly onmouseenter="this.type='date';this.readOnly=false" onfocusin="this.type='date';this.readOnly=false" onfocusout="this.type='text';this.readOnly=true" onmouseleave="this.type='text';this.readOnly=true" style="background-color: white" required>
+                  </div>
+                </div>
+
+              <h5> About & Standing Orders </h5>
+              <a href="https://cdn.glitch.com/f8b62283-ccac-4a89-b0d8-991d640eb2ba%2F5gomGFZ.png?v=1573291454015"
+                class="btn btn-sm btn-info" target="_blank">View</a>
+              <hr>
+              <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="haveread" required>
+                  <label class="form-check-label" for="haveread">I have read MT-RAC About & Standing Orders</label>
+                </div>
+              </div>
+              </form>
+              
+              <div class="row">
+                <button class="btn btn-prevPane col">
+                  <i class="far fa-arrow-alt-circle-left" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+                <button class="btn btn-nextPane col">
+                  <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="modal-pane" data-init="drv-experience" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="veh-type" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="fatigue" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="health" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="weather" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="familiarity" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="mission" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="no-vcom" style="text-align: center;">
+            </div>
+
+            <div class="modal-pane" data-init="servicibility" style="text-align: center;">
+            </div>
+
+            
+           <div class="modal-pane" style="text-align: center;">
+              <h5>Overall Risk:</h5>
+              <h5 class="overall-risk"></h5>
+             <!--
+             <div>
+               <pre class="takenote"></pre>
+             </div>
+             -->
+             <div class="userPage">
+             <h5>Transport Operator Checklist</h5>
+             <h7>Tick wherever applicable</h7>
+             <table class="table dataTable my-0" id="tochecklist">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Description</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="2">Ensure no admin movement during no-move timings (0730-0930 hrs / 1730-1930 hrs)</td>
+                      <td style="position: relative;">
+                        <input class="tocheckbox" type="checkbox" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Brief and ensure troops secure their seat belts before movement of vehicle</td>
+                      <td style="position: relative;">
+                        <input class="tocheckbox" type="checkbox" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Check and ensure safety straps in place and tailboard of vehicle is closed</td>
+                      <td style="position: relative;">
+                        <input class="tocheckbox" type="checkbox" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Brief troops on no sleeping / smoking on the vehicle before movement of vehicle</td>
+                      <td style="position: relative;">
+                        <input class="tocheckbox" type="checkbox" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Secure load before movement of vehicle</td>
+                      <td style="position: relative;">
+                        <input class="tocheckbox" type="checkbox" value="">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">If involved in an accident, to contact parent unit, Transport Node and Police</td>
+                      <td style="position: relative;">
+                        <input class="tocheckbox" type="checkbox" value="">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+             
+               <!--
+              <canvas id="signature-user" class="signature"></canvas>
+              <button id="clear-sign-user" class="btn btn-danger canvas-clear">Clear</button>-->
+             </div>
+              
+               
+             <div class="row">
+                <button class="btn btn-prevPane col">
+                  <i class="far fa-arrow-alt-circle-left" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+                <button class="btn btn-nextPane col"  data-action="gen-summary" data-summary="create-rac-summary">
+                  <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+              </div>
+            </div>
+            
+             <!--
+            <div class="modal-pane" style="text-align: center;">
+              <h5>Overall Risk:</h5>
+              <h5 class="overall-risk"></h5>
+              <div>
+               <pre class="takenote"></pre>
+             </div>
+              <h5>Countersigning Officer</h5>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="officerChk">
+                <label class="form-check-label" for="officerChk">No Countersigning Officer Present</label>
+              </div>
+              <hr>
+              <div id="officerPage" class="">
+
+                <form class="needs-validation" id="officerForm" novalidate>
+                  <div class="form-group" id="officersafetymeasures">
+                    <textarea type="text" class="form-control" id="officermitigation" name="officermitigation" placeholder="Please elaborate on the safety or risk mitigating measures taken" required></textarea>
+                  </div>
+                  <div class="form-group">
+                      <input type="text" class="form-control" id="officerreleasedispatchtime" name="officerreleasedispatchtime" onfocus="(this.type='time')" placeholder="Release/Dispatch Time">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-4">
+                      <input type="text" class="form-control" id="officerrank" name="officerrank" placeholder="Rank" required>
+                    </div>
+                    <div class="form-group col-8">
+                      <input type="text" class="form-control" id="officername" name="officername" placeholder="Name" required>
+                    </div>
+                  </div>
+                </form>
+                <canvas id="signature-officer" class="signature"></canvas>
+                <button id="clear-sign-officer" class="btn btn-danger canvas-clear">Clear</button>
+              </div>
+              <div class="row">
+                <button class="btn btn-prevPane col">
+                  <i class="far fa-arrow-alt-circle-left" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+                <button class="btn btn-nextPane col" data-action="save-sign" data-sign-target="signature-officer" data-sign-name="officersign">
+                  <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+              </div>
+
+            </div>
+
+            <div class="modal-pane" style="text-align: center;">
+              <h5>Overall Risk:</h5>
+              <h5 class="overall-risk"></h5>
+              <div>
+               <pre class="takenote"></pre>
+             </div>
+              <h5>Vehicle Commander/Front Passenger</h5>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="vcomChk">
+                <label class="form-check-label" for="vcomChk">No VCom/FP Present</label>
+              </div>
+              <hr>
+              <div id="vcomPage" class="">
+                
+               <h5>Checklist</h5>
+               <h7>Tick wherever applicable</h7>
+               <table class="table dataTable my-0" id="vcomchecklist">
+                    <thead>
+                      <tr>
+                        <th colspan="2">Description</th>
+                        <th>Vcom</th>
+                        <th>FP</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="2">Driver is licensed to operate the vehicle and has displayed Military driving permit on dashboard</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Ensure no admin movmeent during no-move timings (0730-0930 hrs / 1730-1930 hrs)</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Gone through intended route with SAF driver</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Ensure the driver does not exceed the vehicle or road speed limit</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Assist / warn driver of obstruction, hazard or danger</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Warn driver during reversing or movement towards congested or narrow space</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Brief and ensure troops secure their seat belts before movement of vehicle</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Check and ensure safety straps in place and tailboard of vehicle is closed</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Brief troops on no sleeping / smoking on the vehicle before movement of vehicle</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">Secure load before movement of vehicle</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">If involved in an accident, to contact parent unit, Transport Node and Police</td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="">
+                        </td>
+                        <td style="position: relative;">
+                          <input class="" type="checkbox" value="" disabled>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                  
+                  <form class="needs-validation" id="vcomForm" novalidate>
+                    <div class="form-group" id="vcomsafetymeasures">
+                      <textarea type="text" class="form-control" id="vcommitigation" name="vcommitigation" placeholder="Please elaborate on the safety or risk mitigating measures taken" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="vcomreleasedispatchtime" name="vcomreleasedispatchtime" onfocus="(this.type='time')" placeholder="Release/Dispatch Time">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-4">
+                        <input type="text" class="form-control" id="vcomrank" name="vcomrank" placeholder="Rank" required>
+                      </div>
+                      <div class="form-group col-8">
+                        <input type="text" class="form-control" id="vcomname" name="vcomname" placeholder="Name" required>
+                      </div>
+                    </div>
+                  </form>
+                  <canvas id="signature-vcom" class="signature"></canvas>
+                  <button id="clear-sign-vcom" class="btn btn-danger canvas-clear">Clear</button>
+                </div>
+                <div class="row">
+                  <button class="btn btn-prevPane col">
+                    <i class="far fa-arrow-alt-circle-left" style="font-size: 2.5rem;color:#4e73df;"></i>
+                  </button>
+                  <button class="btn btn-nextPane col" data-action="save-sign|gen-summary" data-sign-target="signature-vcom" data-sign-name="vcomsign" data-summary="create-rac-summary">
+                    <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem;color:#4e73df;"></i>
+                  </button>
+                </div>
+            </div>
+            
+            
+            
+            <div class="modal-pane" style="text-align: center;">
+              <h5>QR Code Authentication</h5>
+              
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-secondary btn-group-qr" id="officerqr" onclick="clickQRRadio('officerqr')">
+                  <input type="radio" name="options" checked > Countersigning Officer
+                </label>
+                <label class="btn btn-outline-secondary btn-group-qr" id="vcomqr" onclick="clickQRRadio('vcomqr')">
+                  <input type="radio" name="options"> V.Comm / F.Passenger
+                </label>
+                <label class="btn btn-outline-secondary btn-group-qr" id="dpqr" onclick="clickQRRadio('dpqr')">
+                  <input type="radio" name="options"> Dispatcher / Releaser
+                </label>
+              </div>
+              
+              <div id="officerqrdiv" class="div-genqr">
+                <button id="officerqrbtn" class="btn btn-success btn-genqr" name="officer" onclick="generateQR(this)">Generate QR</button>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <canvas id="officerQR" class="QRCode"></canvas>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <p id="officerqrtext" class="qrtext"></p>
+                </div>
+              </div>
+              
+              <div id="vcomqrdiv" class="div-genqr">
+                <button id="vcomqrbtn" class="btn btn-success btn-genqr" name="vcom" onclick="generateQR(this)">Generate QR</button>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <canvas id="vcomQR" class="QRCode"></canvas>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <p id="vcomqrtext" class="qrtext"></p>
+                </div>
+              </div>
+              
+              <div id="dpqrdiv" class="div-genqr">
+                <button id="dpqrbtn" class="btn btn-success btn-genqr" name="dp" onclick="generateQR(this)">Generate QR</button>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <canvas id="dpQR" class="QRCode"></canvas>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                  <p id="dpqrtext" class="qrtext"></p>
+                </div>
+              </div>
+              
+              <div class="row">
+                  <button class="btn btn-prevPane col">
+                    <i class="far fa-arrow-alt-circle-left" style="font-size: 2.5rem;color:#4e73df;"></i>
+                  </button>
+                  <button class="btn btn-nextPane col" id="qrnext" data-action="gen-summary" data-summary="create-rac-summary">
+                    <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem;color:#4e73df;"></i>
+                  </button>
+                </div>              
+            </div>
+            -->
+            
+            
+            <div class="modal-pane" style="text-align: center;">
+              <h3 style="font-weight: bold;margin:5px 0;">
+                Final Overview of MT-RAC
+              </h3>
+              <div id="create-rac-summary">
+              </div>
+              <button class="btn btn-primary" id="complete-rac" data-dismiss="modal">Complete</button>
+              <!--<button class="btn btn-prevPane col">
+                <i class="far fa-arrow-alt-circle-left" style="font-size: 2.5rem;color:#4e73df;"></i>
+              </button>-->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/chart.min.js"></script>
+  <script src="/js/bs-charts.js"></script>
+  <!--<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+  <script type="text/javascript"
+    src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/r-2.2.3/datatables.min.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/qrcode.min.js"></script>
+  <script>
+    // let detailData = [
+    //   ['15/10/2019', 'Sembawang Wharves', 'PSV', '-'],
+    //   ['16/10/2019', 'Sembawang Wharves', 'PSV', '-'],
+    //   ['17/10/2019', '9SIR Live Firing', '5Ton', '-'],
+    //   ['18/10/2019', '9SIR Outfield', '5Ton', '-'],
+    //   ['19/10/2019', '9SIR IPPT', 'SOUV', '-'],
+    //   ['20/10/2019', 'IDTC House Visit', 'OUV', '-'],
+    //   ['21/10/2019', 'DIV ICT IPPT', 'SOUV', '-'],
+    //   ['22/10/2019', 'Sembawang Wharves', 'PSV', '-'],
+    //   ['23/10/2019', 'Sembawang Wharves', 'PSV', '-'],
+    //   ['24/10/2019', '9SIR Live Firing', '5Ton', 'Low'],
+    //   ['25/10/2019', '9SIR Outfield', '5Ton', 'High'],
+    //   ['26/10/2019', '9SIR IPPT', 'SOUV', 'Med'],
+    //   ['27/10/2019', 'IDTC House Visit', 'OUV', 'Low'],
+    //   ['30/10/2019', 'DIV ICT IPPT', 'SOUV', '-'],
+    //   ['31/10/2019', 'WPT2', 'SOUV', '-']
+    // ];
+    
+        let detailData = [
+      ['15/10/2019', 'Sembawang Wharves', 'MID 33995'],
+      ['16/10/2019', 'Sembawang Wharves', 'MID 33995'],
+      ['17/10/2019', '9SIR Live Firing', 'MID 21249'],
+      ['18/10/2019', '9SIR Outfield', 'MID 21249'],
+      ['19/10/2019', '9SIR IPPT', 'MID 34719'],
+      ['20/10/2019', 'IDTC House Visit', 'MID 34448'],
+      ['21/10/2019', 'DIV ICT IPPT', 'MID 34710'],
+      ['22/10/2019', 'Sembawang Wharves', 'MID 33995'],
+      ['23/10/2019', 'Sembawang Wharves', 'MID 33995'],
+      ['24/10/2019', '9SIR Live Firing', 'MID 21249'],
+      ['25/10/2019', '9SIR Outfield', 'MID 21249'],
+      ['26/10/2019', '9SIR IPPT', 'MID 34710'],
+      ['27/10/2019', 'IDTC House Visit', 'MID 34448'],
+      ['30/10/2019', 'DIV ICT IPPT', 'MID 34710'],
+      ['31/10/2019', 'WPT2', 'MID 34710']
+    ];
+
+    var userId;
+    var username;
+    //var rank;
+    var name;
+    var node;
+    var isadmin;
+    var risk;
+    var note;
+    var table;
+    
+    var today = new Date();
+    var ayearback = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd
+    }
+    if (mm < 10) {
+      mm = '0' + mm
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+    ayearback = yyyy-1 + '-' + mm + '-' + dd;
+    
+    $(document).ready(function () {
+      $('.nav-link-history').removeClass("disabled");
+    });
+
+    window.onload = function () {
+      /*setTimeout(()=>{
+      table.ajax.reload();
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("wrapper").classList.remove ('d-none');
+      }, 1000);*/
+      
+      //Poll for RAC data at a set interval
+      //setInterval(pollRACData, 1000 * 60 * 0.1);
+      //document.getElementById("complete-rac").addEventListener("click",createRAC)
+      
+      
+      
+      let cookies = document.cookie;
+      //token is first cookie
+      let tokenCookie = cookies.split(';')[0];
+      let token = tokenCookie.replace('access_token=', '');
+      let show = new Event('show');
+
+      initCreateModal();
+      
+//       //load table
+//       for (let i = 0; i < detailData.length; i++) {
+//         const row = createElement('tr', {},
+//                       createElement('td', {}, detailData[i][0]),
+//                       createElement('td', {}, detailData[i][1]),
+//                        createElement('td', {}, detailData[i][2])
+// //                       ,createElement('td', {}, detailData[i][3]),
+// //                       createElement('td', {}, 
+// //                         createElement('button', {className: 'btn btn-primary', onclick: () => {
+// //                           $('#modal-create-rac').modal('show');
+// //                         }}, 'Create'),
+// //                         createElement('button', {className: 'btn btn-secondary', style: {marginLeft: '4px'}, onclick: () => {
+                          
+// //                         }}, 'View'),
+// //                       ),
+//                     );
+//         document.getElementById('userDetailTableInner').children[1].appendChild(row);            
+//       }
+
+      // //jquery data table
+      // table = $('#userDetailTableInner').DataTable({
+      //   "order": [0, 'desc'],
+      //   dom: 'lBfrtip',
+      //   buttons: [{
+      //     text: 'Create RAC',
+      //     action: function () {
+      //       //reloadDetailDataTable()
+      //       showRAC()
+      //     },
+      //     className: 'btn-primary'
+      //   }]
+      // });
+      // $('.btn-secondary').removeClass('btn-secondary');
+      // $('.dataTables_length').addClass('bs-select');
+
+      // ajax data return
+      function initTable(){
+        table = $('#userDetailTableInner').DataTable({
+          "order": [0, 'desc'],
+          dom: 'lBfrtip',
+          buttons: [{
+            text: 'Create MT-RAC',
+            action: function () {
+              //reloadDetailDataTable()
+              showRAC()
+            },
+            className: 'btn-primary'
+          }],
+          "ajax": {
+            url: 'users/'+userId+'/rac',
+            dataSrc: ''
+          },
+          "autoWidth": false,
+          "columns": [
+            { data: {"_":'timestamp',"filter":'timestamp',"display":'formattedTS'} },
+            { data: 'detailid'},
+            { data: 'vehno'},
+            { data: {"_":'riskindex',"filter":'riskindex',"display":'risk'}},
+            { data:null,"defaultContent":"<div class='btn-group' role='group'><button type='button' class='btn btn-success viewRAC' data-toggle='modal' data-target='#racModal'>View</button><button type='button' class='btn btn-secondary viewQR' data-toggle='modal' data-target='#qrModal'>Endorse</button></div>"}
+          ]
+        });
+        
+        $('.btn-secondary').removeClass('btn-secondary');
+        
+        $('#userDetailTableInner tbody').on('click', '.viewRAC', function(){
+          var data = table.row($(this).parents('tr')).data();
+          viewRAC(data.Id)
+        })
+        
+        $('#userDetailTableInner tbody').on('click', '.viewQR', function(){
+          var data = table.row($(this).parents('tr')).data();
+          viewQR(data.Id)
+          
+          var usertpes = ['officer','vcom','dp']
+          for (let i=0;i<=usertpes.length-1;++i){
+            $('#'+usertpes[i]+'qrbtn').off()
+            $('#'+usertpes[i]+'qrbtn').on('click',function(){
+              generateQR(usertpes[i],data.Id)
+            })
+          }
+          //generateQR(usertype,data.Id)
+        })
+        
+        $('#racModal').on('hide.bs.modal', () => {
+          let racTable = document.getElementById('rac-modal-table-body')
+            for(var i = racTable.rows.length - 1; i > -1; i--){
+                racTable.deleteRow(i);
+            }
+          $('#rac-modal-title').text('')
+          //table.ajax.reload();
+        })
+        
+        $('#qrModal').on('hide.bs.modal', () => {
+          $(".qrtext").text("");
+          $(".QRCode").hide()
+          $(".div-genqr").hide();
+          $(".btn-group-qr").removeClass("active");
+          table.ajax.reload();
+        })
+      }
+
+      
+      function viewRAC(racid){
+        fetch('/users/'+username+'/rac/'+racid)
+        .then(function(response){
+          if (response.status !== 200) {
+            alert('Error in displaying MT-RAC... Status Code: ' + response.status)
+            return
+          }
+          response.json().then(async data=>{
+            console.log(JSON.stringify(data));
+            //do destructuring & mapping
+            let {Id, userid, timestamp, detailid, journeyfrom, journeyto, vehno, avidate, risk, drvexperience, vehtype, fatigue, health, weather, familiarity, mission, novcom, servicibility, officername, officermitigation, vcomname, vcommitigation, dpname, dptime, tochecklist} = data;
+            
+            //let TOrank = await getUserParam([userid,'rank'])
+            let TOname = await getUserParam([userid,'name'])
+            
+            const riskLevels = ['Low', 'Medium', 'High', 'No Move'];
+            
+            const formedArray = [drvexperience, vehtype, fatigue, health, weather, familiarity, mission, novcom, servicibility]
+            
+            const riskMapping = {
+              'drvexperience':{
+                'Title':"Driver's or Rider's Experience",
+                'Low':"Cat A/B or above 4000km",
+                'Medium':"Cat D or above 1000km",
+                'High':"Cat D or below 1000km",
+                'No Move':"Not trained/familiarised on vehicle",
+                'No Move':"No JIT done where applicable"
+              },
+              'vehtype':{
+                'Title':"Vehicle / Motorcycle Type",
+                'Low':"Same as last detail",
+                'Low':"GP Car/Pickup or 200CC",
+                'Medium':"Class 3 or 800CC",
+                'High':"Class 4 and above"
+              },
+              'fatigue':{
+                'Title':"Length of Rest",
+                'Low':"More than 7 hours",
+                'Medium':"Less than 7 hours (In camp/Home)",
+                'High':"Less than 7 hours (Field)",
+                'No Move':"Less than 4 hours (Field)"
+              },
+              'health':{
+                'Title':"Health",
+                'Low':"Good",
+                'Medium':"Fair (Just recovered from illness)",
+                'No Move':"Poor (Ill or still under medication that cause drowsiness)"
+              },
+              'weather':{
+                'Title':"Weather",
+                'Low':"Dry",
+                'Medium':"Wet",
+                'High':"Heavy Rain"
+              },
+              'familiarity':{
+                'Title':"Route Familiarity",
+                'Low':"Familiar",
+                'High':"Unfamiliar even after route brief done",
+                'No Move':"Unfamiliar as route brief is not done"
+              },
+              'mission':{
+                'Title':"Mission",
+                'Low':"Admin",
+                'Medium':"Training/Operations(Including towing)",
+                'High':"All administrative towing"
+              },
+              'novcom':{
+                'Title':"Without Vehicle Commander",
+                'Low':"Cat A/B",
+                'Medium':"Cat C",
+                'High':"Cat D",
+                'N/A':"Vehicle Commander Present"
+              },
+              'servicibility':{
+                'Title':"Vehicle / Motorcycle Serviceability",
+                'Low':"No fault",
+                'Medium':"",
+                'High':"Minor Fault",
+                'No Move':"Major Fault"
+              }
+            }
+            
+            //do DOM manipulation racmodal
+            let racTable = document.getElementById('rac-modal-table-body')
+
+            
+            //rac id
+            $('#rac-modal-title').text("View MT-RAC #"+Id)
+            
+            //TO Name
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"Transport Operator"),
+                //createElement('td',{},TOrank.rank+" "+ TOname.name)
+                createElement('td',{},TOname.name)
+               )
+            )
+            
+            //timestamp
+            var date = new Date(parseInt(timestamp))
+            var datetime = date.toString()
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"Created On"),
+                createElement('td',{},datetime)
+               )
+            )
+            
+            //risk
+            var riskcolor = {
+              "No Move": "grey",
+              "High": "red",
+              "Medium": "orange",
+              "Low": "green"
+            }[risk];
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"Overall Risk"),
+                createElement('td',{},risk)
+               )
+            )
+            
+            //detailid
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"Detail ID"),
+                createElement('td',{},detailid)
+               )
+            )
+            
+            //from
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"From"),
+                createElement('td',{},journeyfrom)
+               )
+            )
+            
+            //to
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"To"),
+                createElement('td',{},journeyto)
+               )
+            )
+            
+            //vehno
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"Vehicle No."),
+                createElement('td',{},"MID "+vehno)
+               )
+            )
+            
+            //avidate
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},"Last AVI Date"),
+                createElement('td',{},avidate)
+               )
+            )
+            
+            const formKeys = Object.keys(riskMapping)
+            for(let i = 0; i < formKeys.length; i++){
+              racTable.appendChild(
+                createElement('tr',{},
+                  createElement('th', {},riskMapping[formKeys[i]]['Title']),
+                  createElement('td', {'style':{'wordBreak':'break-word'}}, riskMapping[formKeys[i]][formedArray[i]]),
+                 )
+              )
+            }
+            /*
+            racTable.appendChild(
+              createElement('tr',{},
+                createElement('th',{},),
+                createElement('td',{},)
+               )
+            )
+            */
+            
+            
+          //officer
+            if(officername){
+              racTable.appendChild(
+                createElement('tr', {}, 
+                  createElement('th', {}, 'Countersigning Officer'),
+                  // createElement('td', {}, officerrank + ' ' + officername),
+                  createElement('td', {}, officername),
+                )
+
+              );
+             racTable.appendChild(
+                createElement('tr', {}, 
+                  createElement('th', {}, 'Mitigation Measures'),
+                  createElement('td', {'style':{'wordBreak':'break-word'}}, officermitigation),
+                )
+              );
+            }
+
+            
+          //vcom
+            if(vcomname){
+              racTable.appendChild(
+                createElement('tr', {}, 
+                  createElement('th', {}, 'Vehicle Commander'),
+                  //createElement('td', {}, vcomrank + ' ' + vcomname),
+                  createElement('td', {}, vcomname),
+                )
+              );
+
+              racTable.appendChild(
+                createElement('tr', {}, 
+                  createElement('th', {}, 'Mitigation Measures'),
+                  createElement('td', {'style':{'wordBreak':'break-word'}}, vcommitigation),
+                )
+              );
+            }
+              
+            //dp
+            if(dpname){
+              racTable.appendChild(
+                createElement('tr', {}, 
+                  createElement('th', {}, 'Dispatcher / Releaser'),
+                  // createElement('td', {}, dprank + ' ' + dpname),
+                  createElement('td', {}, dpname),
+                )
+              );
+
+              racTable.appendChild(
+                createElement('tr', {}, 
+                  createElement('th', {}, 'Dispatch / Release Time'),
+                  createElement('td', {}, dptime),
+                )
+              );
+            }
+            
+            const riskColor = {'Low':'green','Medium':'orange','High':'red','No Move':'black'}
+            for (let i=0; i<=riskLevels.length-1; i++){
+              let riskElement = $("#rac-modal-table-body td:contains("+riskLevels[i]+")")
+              riskElement.css("color", riskColor[riskLevels[i]]);
+              riskElement.css("font-weight", "Bold");
+              riskElement.css("font-size", "120%");
+            }
+            
+            //split to checklist string
+            const tochecklistCharArray = tochecklist.split("")
+            // View TO checklist
+            const viewtocheckboxArray = document.getElementsByClassName('viewtocheckbox')
+            let count = 0
+            Array.prototype.forEach.call(viewtocheckboxArray, function(cbox) {
+              if (tochecklistCharArray[count] === "1"){
+                cbox.checked = true
+              }
+              else if (tochecklistCharArray[count] === "0"){
+                cbox.checked = false
+              }
+              ++count
+            })
+            count = 0
+            
+          })
+        })
+      }
+
+      function viewQR(racid){
+        const Id = racid
+        $('#qr-modal-title').text("QRCode Endorsement (MT-RAC #"+Id+")")
+        
+      }
+
+      const getUserParam = async (params, callback) =>{
+        let response = await fetch("/user/"+params[0]+"/"+params[1])
+        let data = await response.json();
+        return data;
+      }      
+      //Fetching user data (one time)
+      fetch('/me.json')
+        .then(
+          function (response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+              return;
+            }
+            response.json().then(data => {
+              console.log(JSON.stringify(data));
+              //Set user variables here
+              userId = data.id;
+              username = data.username;
+              //rank = data.rank;
+              name = data.name;
+              node = data.node;
+              isadmin = data.isadmin;
+              //document.getElementById("name-holder").innerHTML = rank + " " + name;
+              document.getElementById("name-holder").innerHTML = name;
+            })
+              .then(() => {
+                console.log('thenfetch', userId, username, name, node, isadmin)
+                //init jquery datatable
+                initTable();
+                //reload table every minute
+                setTimeout(()=>{
+                  table.ajax.reload();
+                }, 60000);
+              })
+          }
+        )
+        .catch(function (err) {
+          console.log('Fetch Error :-S', err);
+        });
+      
+      
+      
+      
+      //Fetching data in interval (table updates, alerts etc)
+      /*setTimeout(()=>{
+        fetch('/intervalData.json')
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+              return;
+            }
+            response.json().then(function(data) {
+              console.log(JSON.stringify(data));
+              //Set user variables here, can also set global elements
+              var userId = data.id;
+              var username = data.username;
+              document.getElementById("name-holder").innerHTML=username;
+            });
+          }
+        )
+      },30000)*/
+
+      //Page swapping
+
+      //Initial state
+      let state = {
+        "previousPage": "index",
+        "currentPage": "index"
+      };
+      (function initialize() {
+        window.history.replaceState(state, null, "");
+
+        render(state);
+      })();
+      //Navbar links
+      var navHistory = document.querySelectorAll('.nav-link-history');
+      navHistory.forEach((nav) => {
+        //alert(nav)
+        nav.addEventListener('click', navClick);
+      })
+
+      //Custom event for page show
+      function pageShown(ev) {
+        console.log('Page', ev.target.id, 'was shown');
+      };
+
+      //Pages
+      var pages = document.querySelectorAll('.page');
+      pages.forEach((pg) => {
+        pg.addEventListener('show', pageShown);
+      })
+
+      //Navigation function
+      function navClick(ev) {
+        ev.preventDefault();
+        let href = ev.currentTarget.getAttribute("href");
+        if (href === state.currentPage) {
+          return;
+        }
+        [state.previousPage, state.currentPage] = [state.currentPage, href];
+
+        history.pushState(state, href, '');
+        //alert(JSON.stringify(state))
+        document.getElementById('nav-' + state.previousPage).classList.remove('active');
+        document.getElementById('nav-' + state.currentPage).classList.add('active');
+        document.querySelector('.currentPage').classList.add('d-none');
+        document.querySelector('.currentPage').classList.remove('currentPage');
+        document.getElementById('page-' + state.currentPage).classList.remove('d-none')
+        document.getElementById('page-' + state.currentPage).classList.add('currentPage')
+        var title = ' - 3TPT'
+        switch (state.currentPage) {
+          case "index":
+            title = "Dashboard" + title;
+            break;
+          default:
+            title = state.currentPage.charAt(0).toUpperCase() + state.currentPage.slice(1) + title;
+        }
+
+        try {
+          document.getElementsByTagName('title')[0].innerHTML = title.replace('<', '&lt;').replace('>', '&gt;').replace(' & ', ' &amp; ');
+        } catch (e) { }
+        document.title = title;
+        render(state);
+      }
+
+      //On Back
+      window.onpopstate = function (event) {
+        //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+        state = event.state
+        document.getElementById('nav-' + state.previousPage).classList.remove('active');
+        document.getElementById('nav-' + state.currentPage).classList.add('active');
+        document.querySelector('.currentPage').classList.add('d-none');
+        document.querySelector('.currentPage').classList.remove('currentPage');
+        document.getElementById('page-' + state.currentPage).classList.remove('d-none');
+        document.getElementById('page-' + state.currentPage).classList.add('currentPage');
+        render(state);
+      };
+
+      function render() {
+        //we can render data here
+        $("#page-top").addClass("sidebar-toggled")
+        $("#nav-bar").addClass("toggled")
+        document.getElementById('page-' + state.currentPage).dispatchEvent(show);
+      }
+      
+      // initSignatureBox(document.getElementById('signature-officer'), document.getElementById('clear-sign-officer'), 800, 400);
+      // initSignatureBox(document.getElementById('signature-vcom'), document.getElementById('clear-sign-vcom'), 800, 400);
+      // initSignatureBox(document.getElementById('signature-user'), document.getElementById('clear-sign-user'), 800, 400);
+      //set avi max date to today
+      document.getElementById("vehavi").setAttribute("max", today);
+      document.getElementById("vehavi").setAttribute("min", ayearback);
+      
+    
+      //const risks = ["Low", "Medium", "High", "No Move"];
+      riskLevels.forEach((r) => {
+        let inputs = getInputsByValue(r)
+        inputs.forEach((rr) => {
+          rr.addEventListener('click', setOverallRisk);
+          if (r == "No Move"){
+            rr.addEventListener('click', function(){
+              rr.checked = confirm("This option has a \"No Move\" risk. \n Are you sure?")
+            });
+          };
+        });
+      });
+      
+    
+      //end of Window ready
+    } 
+    
+    const panels = {
+      'drv-experience': {
+        title: "Driver's / Rider's Experience",
+        col: 2,
+        header: ['Driving Experience', 'Riding Experience'],
+        data: [
+          ['CAT A/B', '4000km & Above', 'Low'],
+          ['CAT C', '1000km & Above', 'Medium'],
+          ['CAT D', 'Below 1000km', 'High'],
+          [0, 'Not trained/familiarised in vehicle that you are driving/riding', 'No Move'],
+          [0, 'No JIT done where applicable', 'No Move'],
+        ],
+        formName: 'drv-experience'
+      },
+      'veh-type': {
+        title: "Vehicle / Motorcycle Type",
+        col: 2,
+        header: ['Vehicle', 'Motorcycle'],
+        data: [
+          [0, 'Same as last detail', 'Low'],
+          ['GP Car/Pickup', '200CC', 'Low'],
+          ['Class 3', '800CC', 'Medium'],
+          ['Class 4 and above', '', 'High']
+        ],
+        formName: 'veh-type'
+      },
+      'fatigue': {
+        title: "Fatigue",
+        col: 1,
+        header: ['Length of Rest'],
+        data: [
+          ['More than 7 hours', 'Low'],
+          ['Less than 7 hours (In camp/Home)', 'Medium'],
+          ['Less than 7 hours (Field)', 'High'],
+          ['Less than 4 hours (Field)', 'No Move']
+        ],
+        formName: 'fatigue'
+      },
+      'health': {
+        title: "Health",
+        col: 1,
+        header: ['Condition'],
+        data: [
+          ['Good', 'Low'],
+          ['Fair (Just recovered from illness)', 'Medium'],
+          ['Poor (Ill or still under medication that cause drowsiness)', 'No Move']
+        ],
+        formName: 'health'
+      },
+      'weather': {
+        title: "Weather",
+        col: 1,
+        header: ['Condition'],
+        data: [
+          ['Dry', 'Low'],
+          ['Wet', 'Medium'],
+          ['Heavy Rain', 'High']
+        ],
+        formName: 'weather'
+      },
+      'familiarity': {
+        title: "Route Familiarity",
+        col: 1,
+        header: ['Level'],
+        data: [
+          ['Familiar', 'Low'],
+          ['Unfamiliar even after route brief done', 'High'],
+          ['Unfamiliar as route brief is not done', 'No Move']
+        ],
+        formName: 'familiarity'
+      },
+      'mission': {
+        title: "Mission",
+        col: 1,
+        header: ['Type'],
+        data: [
+          ['Admin', 'Low'],
+          ['Training/Operations(Including towing)', 'Medium'],
+          ['All administrative towing', 'High']
+        ],
+        formName: 'mission'
+      },
+      'no-vcom': {
+        title: "Without Vehicle Commander",
+        col: 1,
+        header: ['Driver\'s Experience'],
+        data: [
+          ['CAT A, B', 'Low'],
+          ['CAT C', 'Medium'],
+          ['CAT D', 'No Move'],
+          ['Vehicle Commander Present', 'N/A']
+        ],
+        formName: 'no-vcom'
+      },
+      'servicibility': {
+        title: "Vehicle / Motorcycle Serviceability",
+        col: 1,
+        header: ['Fault Severity'],
+        data: [
+          ['No fault', 'Low'],
+          ['Minor Fault', 'High'],
+          ['Major Fault', 'No Move']
+        ],
+        formName: 'servicibility'
+      }
+    }
+    
+    const formMapping = {
+      'risk':'Overall Risk',
+      'journeyfrom': 'Journey From',
+      'journeyto': 'Journey To',
+      'vehno': 'Vehicle No',
+      'vehavi': 'Last AVI Date',
+      'drv-experience': 'Driving/Riding Experience',
+      'veh-type': 'Vehicle Type',
+      'fatigue': 'Fatigue',
+      'health': 'Health',
+      'weather': 'Weather',
+      'familiarity': 'Familiarity',
+      'mission': 'Mission Type',
+      'no-vcom': 'Driver Experience (w/o Vcom)',
+      'servicibility': 'Serviceability'
+    };
+    
+    const riskLevels = ['Low', 'Medium', 'High', 'No Move'];
+
+    let createModalCache = {};
+    function initCreateModal() {
+      const modalPanes = document.getElementById('modal-create-rac-panes');
+      const nextButtons = modalPanes.getElementsByClassName('btn-nextPane');
+      const panes = modalPanes.getElementsByClassName('modal-pane');
+      for(let i=0;i<panes.length;i++){
+        const pane = panes[i];
+        if(pane.getAttribute('data-init') !== null && pane.getAttribute('data-init') !== ''){
+          const paneData = panels[pane.getAttribute('data-init')];
+          if(paneData === undefined) continue;
+
+          const headers = createElement('tr', {});
+          for(let j=0;j<paneData.col + 1;j++){
+            headers.appendChild(createElement('th', {}, (j >= paneData.header.length ? '' : paneData.header[j])));
+          }
+
+          const tbody = createElement('tbody', {});
+          for(let j=0;j<paneData.data.length;j++){
+            const row = createElement('tr', {});
+            let colSpanCounter = 1;
+            for(let k=0;k<paneData.col;k++){
+              if(paneData.data[j][k] === 0){
+                colSpanCounter++;
+                continue;
+              }
+              row.appendChild(createElement('td', (colSpanCounter > 1) ? {attributes: {colspan: colSpanCounter}} : {}, paneData.data[j][k]));
+              colSpanCounter = 1;
+            }
+            row.appendChild(createElement('td', {style: {position: 'relative'}}, 
+              createElement('input', {className: 'form-check-input', type: 'radio', name: paneData.formName, value: paneData.data[j][paneData.col], required: true})
+            ));
+            tbody.appendChild(row);
+          }
+
+          pane.appendChild(createElement('h5', {}, paneData.title));
+          pane.appendChild(createElement('form', {className: 'needs-validation', attributes: {novalidate: ''}},
+            createElement('table', {className: 'table', style: {margin: '8px', width: 'calc(100% - 16px)'}}, 
+              createElement('thead', {}, headers),
+              tbody
+            )
+          ));
+          pane.appendChild(createElement('div', {className: 'row'},
+            createElement('button', {className: 'btn btn-prevPane col', 'data-action':"save-sign"}, 
+              createElement('i', {className: 'far fa-arrow-alt-circle-left', style: {fontSize: '2.5rem', color: '#4e73df'}})
+            ),
+            createElement('button', {className: 'btn btn-nextPane col'},
+              createElement('i', {className: 'far fa-arrow-alt-circle-right', style: {fontSize: '2.5rem', color: '#4e73df'}})
+            )
+          ));
+        }
+      }
+
+      for (let i = 0; i < nextButtons.length; i++) {
+        nextButtons[i].onclick = function () {
+          if(nextButtons[i].parentElement.parentElement.getElementsByClassName('needs-validation').length > 0){
+            const form = nextButtons[i].parentElement.parentElement.getElementsByClassName('needs-validation')[0];
+            
+            if(!form.checkValidity()){
+              form.classList.add('was-validated');
+              return;
+            }
+            const fData = new FormData(form);
+            const keys = fData.keys();
+            let k = keys.next();
+            while(k.done !== true){
+              console.log(k.value);
+              createModalCache[k.value] = fData.get(k.value);
+              k = keys.next();
+            }
+          }
+          
+          if(nextButtons[i].getAttribute('data-action') !== undefined && nextButtons[i].getAttribute('data-action') !== null && nextButtons[i].getAttribute('data-action') !== ''){
+            const action = nextButtons[i].getAttribute('data-action');
+            if(action.includes('save-sign')){
+              const target = nextButtons[i].getAttribute('data-sign-target');
+              const formName = nextButtons[i].getAttribute('data-sign-name');
+              
+              createModalCache[formName] = document.getElementById(target).toDataURL();
+            }
+
+            if(action.includes('eval-risk')){
+              setOverallRisk();
+            }
+            
+            if(action.includes('post-rac-data')){
+              postRACData();
+            }
+            
+            if(action.includes('gen-summary')){
+              const summaryContainer = document.getElementById(nextButtons[i].getAttribute('data-summary'));
+              while(summaryContainer.lastChild) summaryContainer.removeChild(summaryContainer.lastChild);
+              
+              const keys = Object.keys(formMapping);
+              const table = document.createElement('table');
+              table.className = 'table';
+              
+              for(let j = 0; j < keys.length; j++){
+                table.appendChild(
+                  createElement('tr', {}, 
+                    createElement('td', {}, formMapping[keys[j]]),
+                    createElement('td', {}, createModalCache[keys[j]]),
+                  )
+                );
+              }
+              
+//               //handle signatures
+//               if(createModalCache['officerrank']){
+//                 table.appendChild(
+//                   createElement('tr', {}, 
+//                     createElement('td', {}, 'Countersigning Officer'),
+//                     createElement('td', {}, createModalCache['officerrank'] + ' ' + createModalCache['officername']),
+//                   )
+
+//                 );
+//                table.appendChild(
+//                   createElement('tr', {}, 
+//                     createElement('td', {}, 'Mitigation Measures'),
+//                     createElement('td', {}, createModalCache['officermitigation']),
+//                   )
+//                 );
+//               }
+//               // table.appendChild(
+//               //   createElement('tr', {}, 
+//               //     createElement('td', {attributes: {colspan: 2}},
+//               //       createElement('img', {style: {width: '80%', maxWidth: '600px'}, src: createModalCache['officersign']})
+//               //     )
+//               //   )
+//               // );
+//               if(createModalCache['vcomrank']){
+//                 table.appendChild(
+//                   createElement('tr', {}, 
+//                     createElement('td', {}, 'Vehicle Commander'),
+//                     createElement('td', {}, createModalCache['vcomrank'] + ' ' + createModalCache['vcomname']),
+//                   )
+//                 );
+
+//                 table.appendChild(
+//                   createElement('tr', {}, 
+//                     createElement('td', {}, 'Mitigation Measures'),
+//                     createElement('td', {}, createModalCache['vcommitigation']),
+//                   )
+//                 );
+//               }
+
+//               // table.appendChild(
+//               //   createElement('tr', {}, 
+//               //     createElement('td', {attributes: {colspan: 2}}, 
+//               //       createElement('img', {style: {width: '80%', maxWidth: '600px'}, src: createModalCache['vcomsign']})
+//               //     )
+//               //   )
+//               // );
+              
+//               if(createModalCache['dprank']){
+//                 table.appendChild(
+//                   createElement('tr', {}, 
+//                     createElement('td', {}, 'Dispatcher / Releaser'),
+//                     createElement('td', {}, createModalCache['dprank'] + ' ' + createModalCache['dpname']),
+//                   )
+//                 );
+
+//                 table.appendChild(
+//                   createElement('tr', {}, 
+//                     createElement('td', {}, 'Dispatch / Release Time'),
+//                     createElement('td', {}, createModalCache['dptime']),
+//                   )
+//                 );
+//               }
+              summaryContainer.appendChild(table);
+              
+              // change risk color
+              const riskColor = {'Low':'green','Medium':'orange','High':'red','No Move':'black'}
+              for (let i=0; i<=riskLevels.length-1; i++){
+                let riskElement = $("#create-rac-summary table td:contains("+riskLevels[i]+")")
+                riskElement.css("color", riskColor[riskLevels[i]]);
+                riskElement.css("font-weight", "Bold");
+                riskElement.css("font-size", "120%");
+              }
+              
+            }
+          }
+          
+          const curTranslate = parseInt(modalPanes.style.transform.split('(')[1].split(')')[0].replace('%', ''));
+          modalPanes.style.transform = 'translateX(' + (curTranslate - 100) + '%)';
+          
+         
+        }
+      }
+      const prevButtons = modalPanes.getElementsByClassName('btn-prevPane');
+      for (let i = 0; i < prevButtons.length; i++) {
+        prevButtons[i].onclick = function () {
+          const curTranslate = parseInt(modalPanes.style.transform.split('(')[1].split(')')[0].replace('%', ''));
+          modalPanes.style.transform = 'translateX(' + (curTranslate + 100) + '%)';
+        }
+      }
+      
+      $('#modal-create-rac').on('hide.bs.modal', () => {
+          modalPanes.style.transform = 'translateX(0)';
+          createModalCache = {};
+          
+          //reset all form data
+          var inputElements = document.getElementsByTagName("input");
+          for (var i=0; i < inputElements.length; i++) {
+            if (inputElements[i].type == "text" || inputElements[i].type == "number" || inputElements[i].type == "date" || inputElements[i].type == "time") {
+              inputElements[i].value = "";
+              if (inputElements[i].type != "number"){
+                inputElements[i].type = "text";
+              }
+            }
+            else if((inputElements[i].type == "radio" || inputElements[i].type == "checkbox") && inputElements[i].checked == 1){
+              inputElements[i].checked = 0;
+            }
+          }
+          $("textarea").val("");
+          $("form").removeClass("was-validated")
+          document.getElementById("haveread").checked = 0;
+          
+        //   document.getElementById("officerChk").checked = 0;
+        //   document.getElementById("vcomChk").checked = 0;
+        //   var canvasClear = document.getElementsByClassName("canvas-clear")
+        //   Array.prototype.forEach.call(canvasClear, function(cv) {
+        //     cv.click()
+        //   });
+          $(".overall-risk").text("");
+        });
+      document.getElementById("complete-rac").addEventListener("click",createRAC)
+    }
+
+    function createElement(type, props){
+      const ret = document.createElement(type);
+      recursiveSet(ret, props);
+
+      if(arguments.length > 2){
+        for(let i=2;i<arguments.length;i++){
+          if(typeof(arguments[i]) === 'string' || typeof(arguments[i]) === 'number')
+            ret.textContent = arguments[i];
+          else if(typeof(arguments[i]) === 'object')
+            ret.appendChild(arguments[i]);
+        }
+      }
+
+      return ret;
+    }
+
+    function recursiveSet(node, props){
+      const keys = Object.keys(props);
+      for(let i=0;i<keys.length;i++){
+        const k = keys[i];
+        if(k === 'attributes'){
+          recursiveSetAttribute(node, props[k]);
+        }else if(typeof(props[k]) === 'object'){
+          recursiveSet(node[k], props[k]);
+        }else{
+          node[k] = props[k];
+        }
+      }
+    }
+
+    function recursiveSetAttribute(node, props){
+      const keys = Object.keys(props);
+      for(let i=0;i<keys.length;i++){
+        const k = keys[i];
+        node.setAttribute(k, props[k]);
+      }
+    }
+
+//     function initSignatureBox(cvs, clearBtn, canvasWidth, canvasHeight) {
+//       const canvas = cvs;
+//       const ctx = canvas.getContext('2d');
+//       let isPainting = false;
+
+//       //setup
+//       canvas.width = canvasWidth;
+//       canvas.height = canvasHeight;
+
+//       ctx.lineWidth = 6;
+//       ctx.lineJoin = 'round';
+//       ctx.lineCap = 'round';
+//       ctx.strokeStyle = '#F00';
+
+//       const onPaint = (e) => {
+//         if (!isPainting) return;
+
+//         const ratio = (canvasWidth / canvas.clientWidth);
+
+//         ctx.lineTo(ratio * e.offsetX, ratio * e.offsetY);
+//         ctx.stroke();
+//       };
+
+//       const onTouchPaint = (e) => {
+//         if (!isPainting) return;
+
+//         const bRect = canvas.getBoundingClientRect();
+//         const ratio = (canvasWidth / bRect.width);
+
+//         ctx.lineTo(ratio * (e.targetTouches[0].clientX - bRect.x), ratio * (e.targetTouches[0].clientY - bRect.y));
+//         ctx.stroke();
+//       };
+
+//       const stopDrawing = (e) => {
+//         if (!isPainting) return;
+
+//         isPainting = false;
+//         canvas.removeEventListener('mousemove', onPaint, false);
+//         canvas.removeEventListener('touchmove', onTouchPaint, false);
+//       };
+
+//       const startDrawing = (e) => {
+//         if (isPainting) return;
+
+//         isPainting = true;
+//         const ratio = (canvasWidth / canvas.clientWidth);
+
+//         ctx.beginPath();
+//         ctx.moveTo(ratio * e.offsetX, ratio * e.offsetY);
+
+//         canvas.addEventListener('mousemove', onPaint, false);
+//         canvas.addEventListener('touchmove', onTouchPaint, false);
+//       };
+
+//       const clearCanvas = () => {
+//         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+//       }
+
+//       canvas.addEventListener('mousedown', startDrawing);
+//       canvas.addEventListener('mouseup', stopDrawing);
+//       canvas.addEventListener('touchstart', startDrawing);
+//       canvas.addEventListener('touchend', stopDrawing);
+
+//       if (clearBtn !== undefined) {
+//         clearBtn.addEventListener('click', clearCanvas);
+//       }
+//     }
+    
+    
+//       var officerChk = document.getElementById('officerChk')
+//       var officerPage = document.getElementById('officerPage')
+//       var officerForm = document.getElementById('officerForm')
+//       officerChk.onclick=function noOfficer(){
+//         if (officerChk.checked==true){
+//         officerPage.classList.add('d-none');
+//         officerForm.classList.remove('needs-validation')
+//       }
+//       else{
+//         officerPage.classList.remove('d-none');
+//         officerForm.classList.add('needs-validation')
+//       }
+//     }
+    
+//     var vcomChk = document.getElementById('vcomChk')
+//       var vcomPage = document.getElementById('vcomPage')
+//       var vcomForm = document.getElementById('vcomForm')
+//       vcomChk.onclick=function noVcmm(){
+//         if (vcomChk.checked==true){
+//         vcomPage.classList.add('d-none');
+//         vcomForm.classList.remove('needs-validation')
+//       }
+//       else{
+//         vcomPage.classList.remove('d-none');
+//         vcomForm.classList.add('needs-validation')
+//       }
+//     }
+    
+    function getInputsByValue(value){
+        var allInputs = document.getElementsByTagName("input");
+        var results = [];
+        for(var x=0;x<allInputs.length;x++)
+            if(allInputs[x].value == value)
+                results.push(allInputs[x]);
+        return results;
+    }
+    
+    function showRAC(){
+      $('#modal-create-rac').modal('show');
+    }
+    
+    function setOverallRisk(){
+      var riskcolor
+      var medRisks = []
+      var highRisks = []
+      var noMoves = []
+      note = "Risks to take note of:"
+      
+      var low = 0
+      getInputsByValue("Low").forEach((l)=>{
+        if (l.checked){++low}
+      })
+      
+      
+      var med = 0
+      getInputsByValue("Medium").forEach((m)=>{
+        if (m.checked){
+          ++med;
+          medRisks.push(m);
+        }
+      })
+      
+      
+      var high = 0
+      getInputsByValue("High").forEach((h)=>{
+        if (h.checked){
+          ++high;
+          highRisks.push(h);
+        }
+      })
+      
+      
+      var nm = 0
+      getInputsByValue("No Move").forEach((n)=>{
+        if (n.checked){
+          ++nm;
+          noMoves.push(n);
+        }
+      })
+      
+      
+      
+      if (nm>0||high>3){
+        risk = "No Move"
+        riskcolor = "black"
+      }
+      else if(high>0||med>5){
+        risk = "High"
+        riskcolor = "red"
+      }
+      else if(med>0){
+        risk = "Medium"
+        riskcolor = "orange"
+      }
+      else{
+        risk = "Low"
+        riskcolor = "green"
+      }
+      
+      if (med>0){
+        note +="\n(Medium)"
+        medRisks.forEach((mr)=>{
+          var header = mr.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByTagName('h5')[0].innerText
+          var row = mr.parentElement.parentElement.getElementsByTagName('td')[0].innerText
+          note += "\n"+ header + ": " + row;
+        })
+      }
+      if (high>0){
+        note +="\n(High)"
+        highRisks.forEach((hr)=>{
+          var header = hr.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByTagName('h5')[0].innerText
+          var row = hr.parentElement.parentElement.getElementsByTagName('td')[0].innerText
+          note += "\n"+ header + ": " + row;
+        })
+      }
+      if (nm>0){
+        note +="\n(No Move)"
+        noMoves.forEach((nmr)=>{
+          var header = nmr.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.getElementsByTagName('h5')[0].innerText
+          var row = nmr.parentElement.parentElement.getElementsByTagName('td')[0].innerText
+          note += "\n"+ header + ": " + row;
+        })
+      }
+      
+      createModalCache['risk']=risk
+      if (risk=="Medium"||risk=="High"||risk=="No Move"){
+        $("#vcomsafetymeasures").removeClass("d-none")
+        $("#officersafetymeasures").removeClass("d-none")
+        $("#officermitigation").prop('required',true)
+        $("#vcommitigation").prop('required',true)
+        $(".takenote").text(note);
+      }
+      else{
+        $("#vcomsafetymeasures").addClass("d-none")
+        $("#officersafetymeasures").addClass("d-none")
+        $("#officermitigation").prop('required',false)
+        $("#vcommitigation").prop('required',false)
+        $(".takenote").text("");
+      }
+      
+      
+      // var overallRisk = document.getElementsByClassName("overall-risk")
+      // Array.prototype.forEach.call(overallRisk, function(or) {
+      //       or.innerHTML = risk
+      // });
+      
+      $(".overall-risk").css({ 'color': riskcolor, 'font-size': '120%', 'font-weight': 'bold'}).text(risk);
+      
+    }
+    /*
+    RAC Modal conditions, rules & stuff:
+    All panes required to select 1 radio btn
+    Txtbox and canvas fields required
+    Canvas allow retrying
+    If no move radio btn selected, do a popup/prompt but still allow to continue
+    Overall risk = highest risk, or if med > 5 = high, high > 5 = no move
+
+    To do:
+    When entering modal, lock user movement of whatever's behind (no back, etc)
+    */
+
+      //     async function reloadDetailDataTable(){
+
+      //       //ajax get request for table data, store in an array (reuse detailData)
+      //       var url = "/users/"+userId+"/details";
+      //       const response = await fetch(url);
+      //       const detailTableData = await response.json();
+      //       console.log(detailTableData)
+
+      //       //clear table
+      //        $("#userDetailTableInner tbody tr").remove();
+
+      //       //load table (reuse)
+
+      //       for(let i=0;i<detailTableData.length;i++){
+      //         const row = document.createElement('tr');
+      //         row.appendChild(createTextNode('td', detailTableData[i][0]));
+      //         row.appendChild(createTextNode('td', detailTableData[i][1]));
+      //         row.appendChild(createTextNode('td', detailTableData[i][2]));
+      //         const btnCell = document.createElement('td');
+      //         const createBtn = document.createElement('button');
+      //         createBtn.textContent = 'Create';
+      //         createBtn.className = 'btn btn-primary';
+      //         createBtn.onclick = function(){
+      //           $('#modal-create-rac').modal('show');
+      //         }
+
+      //         const viewBtn = document.createElement('button');
+      //         viewBtn.textContent = 'View';
+      //         viewBtn.className = 'btn btn-secondary';
+      //         viewBtn.style.marginLeft = '4px';
+      //         btnCell.appendChild(createBtn);
+      //         btnCell.appendChild(viewBtn);
+      //         row.appendChild(btnCell);
+      //         document.getElementById('userDetailTableInner').children[1].appendChild(row);
+      //       }
+      //     }
+    const pollRACData = async function (){
+      console.log('polling RAC data...')
+      //ajax get request for table data, store in an array (reuse detailData)
+      var url = "/users/"+userId+"/rac";
+      const response = await fetch(url);
+      const detailTableData = await response.json();
+      console.log('user ',userId, 'test data \n',detailTableData)
+      }
+    
+    function clickQRRadio(radio){
+      $(".div-genqr").hide();
+      $("#"+radio+"div").show();
+    }
+    
+    
+    // Example POST method implementation:
+    async function postData(url = '', data = {}) {
+      // Default options are marked with *
+      const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+      });
+      return response.text(); // parses JSON response into native JavaScript objects
+    }
+    
+    /*
+    postData('https://example.com/answer', { answer: 42 })
+  .then((data) => {
+    console.log(data); // JSON data parsed by `response.json()` call
+  });
+    */
+    
+    //QR
+    async function generateQR(userType,racId){
+      // name = officer, vc or dp
+      const name = userType
+      const racid = racId
+      const canvas = document.getElementById(name + "QR")
+      const qrtext = document.getElementById(name+"qrtext")
+      var usertype = 0;
+      if (name == "officer"){
+        usertype = 1;
+      }
+      else if (name == "vcom"){
+        usertype = 2;
+      }
+      else if (name == "dp"){
+        usertype = 3;
+      }
+      const timestamp = Date.now()
+      const qrurl = 'https://3tpt.glitch.me/qrcode/'+usertype+'/'+racid+'/'+timestamp
+      
+      
+      const replyurl = "/qrget/"+usertype+'/'+racid;
+      let response = await fetch(replyurl+'/1');
+      let reply = await response.json()
+      console.log(reply)
+      if (reply.approved == true){
+        qrtext.textContent="MT-RAC has already been approved by "+reply.name+"!";
+        return
+      }
+      else if (reply.approved == false){
+        qrtext.textContent="MT-RAC has already been rejected by "+reply.name+". \t"+"Reason: \""+reply.reason+"\"";
+        document.getElementById("qrnext").disabled=true;
+        return
+      }
+      
+      response = await fetch(replyurl+'/2');
+      reply = await response.json()
+      if (reply.scanned){
+        qrtext.textContent="QR scanned! Waiting for approval...";
+      }
+      else{
+        //qrtext.textContent="QR generated! Please scan within 5 mins";
+        qrtext.textContent="QR generated! Please scan within 5 mins\n"+qrurl;
+      }
+      
+      
+      QRCode.toCanvas(canvas, qrurl, {scale:6}, async function (error) {
+      if (error) console.error(error)
+      canvas.style = "display:block;"
+      console.log('success!');
+      //console.log(createModalCache)
+        //poll for reply
+        
+        var startTime = new Date().getTime();
+        var interval = setInterval(async function(){
+            if(new Date().getTime() - startTime > 300000){
+                clearInterval(interval);
+                let response = await fetch(replyurl+'/3');
+                let reply = await response.json()
+                qrtext.textContent="QR has timed out, please generate a new one. "
+              canvas.style = "display:none;"
+                return;
+            }
+            $('#qrModal').on('hide.bs.modal', () => {
+              clearInterval(interval);         
+              return
+            })
+            let response = await fetch(replyurl+'/2');
+            let reply = await response.json()
+            if (reply.scanned){
+              qrtext.textContent="QR scanned! Waiting for approval...";
+              if (reply.approved == true){
+                qrtext.textContent="MT-RAC Approved by "+reply.name+"!";
+                clearInterval(interval);         
+                return
+              }
+              else if (reply.approved == false){
+                qrtext.textContent="MT-RAC Rejected by "+reply.name+". \t"+"Reason: \""+reply.reason+"\"";
+                document.getElementById("qrnext").disabled=true;
+                clearInterval(interval);
+                return
+              }
+            }
+        
+        }, 10000); 
+      })
+      
+    }
+    
+    // Post rac data to svr
+    function postRACData(){
+      const detailId = createModalCache['detailid'];
+      const from = createModalCache['journeyfrom'];
+      const to = createModalCache['journeyto'];
+      
+      const data = {
+       "name" : name,
+        "detailId" : detailId,
+        "from" : from,
+        "to" : to,
+        "risk" : risk,
+        "note" : note
+      }
+      
+      postData('/racdata/'+username,data)
+      .then((data) => {
+        console.log("data sent:",data);
+        });
+    }
+    
+    /*
+    QRCode.toCanvas(document.getElementById('canvas'), 'www.google.com/search?q=helloworld', function (error) {
+      if (error) console.error(error)
+      console.log('success!');
+    })*/
+    
+    function createRAC(){
+      const tocheckboxArray = document.getElementsByClassName('tocheckbox')
+      let tochecklist = ''
+      Array.prototype.forEach.call(tocheckboxArray, function(cbox) {
+        if (cbox.checked){
+          tochecklist+='1'
+        }
+        else{tochecklist+='0'}
+      })
+      createModalCache['tochecklist']=tochecklist
+      console.log(createModalCache)
+      alert('MT-RAC Created!')
+      const data = createModalCache;
+      postData('/createrac/'+username,data)
+      .then((data) => {
+        table.ajax.reload();
+        console.log("data sent:",data);
+      });
+      
+      
+    }
+    
+  </script>
+</body>
+</html>

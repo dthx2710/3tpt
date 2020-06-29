@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - 3TPT</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/jpeg" sizes="440x332" href="/img/5ton.jpg">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/css/Data-Table-1.css">
+    <link rel="stylesheet" href="/css/Data-Table.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css">
+    <!--<script src="client.js" defer></script>-->
+    <style>
+    /* Center the loader */
+    #loader {
+      position: absolute;
+      left: 55%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+      position: relative;
+      -webkit-animation-name: animatebottom;
+      -webkit-animation-duration: 1s;
+      animation-name: animatebottom;
+      animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+      from { bottom:-100px; opacity:0 } 
+      to { bottom:0px; opacity:1 }
+    }
+
+    @keyframes animatebottom { 
+      from{ bottom:-100px; opacity:0 } 
+      to{ bottom:0; opacity:1 }
+    }
+      
+      .modal-pane{
+        width: 100%;
+        flex: 0 0 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      #modal-create-rac-panes{
+        transition: transform 0.8s ease-in-out;
+      }
+
+    </style>
+</head>
+
+<body id="page-top">
+  <!--<div id="loader"></div>-->
+    <div id="wrapper" class="animate-bottom">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0 nav-link-history" href="index" id="nav-brand">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-truck-moving"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>3TPT</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"><a class="nav-link active nav-link-history" href="index" id="nav-index"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link nav-link-history" href="detail" id="nav-detail"><i class="fas fa-car-side"></i><span>Detail</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="nav navbar-nav flex-nowrap ml-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu" aria-labelledby="searchDropdown">
+                                    <form class="form-inline mr-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1" role="presentation">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><span class="badge badge-danger badge-counter"><!--insertable number--></span><i class="fas fa-bell fa-fw"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
+                                        role="menu">
+                                        <h6 class="dropdown-header">test</h6>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="mr-3">
+                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">test</span>
+                                                <p>test</p>
+                                            </div>
+                                        </a>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="mr-3">
+                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">test</span>
+                                                <p>test</p>
+                                            </div>
+                                        </a>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="mr-3">
+                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">test</span>
+                                                <p>test</p>
+                                            </div>
+                                        </a><a class="text-center dropdown-item small text-gray-500" href="">Show All Alerts</a></div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1" role="presentation">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><i class="fas fa-envelope fa-fw"></i><span class="badge badge-danger badge-counter"><!--insertable number--></span></a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
+                                        role="menu">
+                                        <h6 class="dropdown-header">test</h6>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="/img/avatars/avatar4.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>test</span></div>
+                                                <p class="small text-gray-500 mb-0">test</p>
+                                            </div>
+                                        </a>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="/img/avatars/avatar2.jpeg">
+                                                <div class="status-indicator"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>test</span></div>
+                                                <p class="small text-gray-500 mb-0">test</p>
+                                            </div>
+                                        </a>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="/img/avatars/avatar3.jpeg">
+                                                <div class="bg-warning status-indicator"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>test</span></div>
+                                                <p class="small text-gray-500 mb-0">test</p>
+                                            </div>
+                                        </a>
+                                        <a class="d-flex align-items-center dropdown-item" href="">
+                                            <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="/img/avatars/avatar5.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>test</span></div>
+                                                <p class="small text-gray-500 mb-0">test</p>
+                                            </div>
+                                        </a><a class="text-center dropdown-item small text-gray-500" href="">Show All Alerts</a></div>
+                                </div>
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow" role="presentation">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href=""><span class="d-none d-lg-inline mr-2 text-gray-600 small" id="name-holder"></span><img class="border rounded-circle img-profile" src="/img/avatars/avatar5.jpeg"></a>
+                                    <div
+                                        class="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu"><a class="dropdown-item" role="presentation" href=""><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;test</a><a class="dropdown-item" role="presentation" href=""><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;test</a>
+                                        <a
+                                            class="dropdown-item" role="presentation" href=""><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;test</a>
+                                            <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                    </div>
+                    </li>
+                    </ul>
+            </div>
+            </nav>
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+            <!--Index Page -->
+            <div id="page-index" class="container-fluid page currentPage">
+                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-dark mb-0">Dashboard (Placeholder)</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-primary py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Earnings (monthly)</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0"><span>$40,000</span></div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-success py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Earnings (annual)</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0"><span>$215,000</span></div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-info py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Tasks</span></div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-warning py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pending Requests</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0"><span>18</span></div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7 col-xl-8">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Earnings Overview</h6>
+                                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"
+                                        role="menu">
+                                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" role="presentation" href="">&nbsp;Action</a><a class="dropdown-item" role="presentation" href="">&nbsp;Another action</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="">&nbsp;Something else here</a></div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Revenue Sources</h6>
+                                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"
+                                        role="menu">
+                                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" role="presentation" href="">&nbsp;Action</a><a class="dropdown-item" role="presentation" href="">&nbsp;Another action</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" role="presentation" href="">&nbsp;Something else here</a></div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Direct&quot;,&quot;Social&quot;,&quot;Referral&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;50&quot;,&quot;30&quot;,&quot;15&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{}}}"></canvas></div>
+                                <div
+                                    class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle text-primary"></i>&nbsp;Direct</span><span class="mr-2"><i class="fas fa-circle text-success"></i>&nbsp;Social</span><span class="mr-2"><i class="fas fa-circle text-info"></i>&nbsp;Refferal</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="text-primary font-weight-bold m-0">Projects</h6>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="small font-weight-bold">Server migration<span class="float-right">20%</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
+                            </div>
+                            <h4 class="small font-weight-bold">Sales tracking<span class="float-right">40%</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-warning" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="sr-only">40%</span></div>
+                            </div>
+                            <h4 class="small font-weight-bold">Customer Database<span class="float-right">60%</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-primary" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="sr-only">60%</span></div>
+                            </div>
+                            <h4 class="small font-weight-bold">Payout Details<span class="float-right">80%</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-info" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"><span class="sr-only">80%</span></div>
+                            </div>
+                            <h4 class="small font-weight-bold">Account setup<span class="float-right">Complete!</span></h4>
+                            <div class="progress mb-4">
+                                <div class="progress-bar bg-success" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">100%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="text-primary font-weight-bold m-0">Todo List</h6>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span></div>
+                                    <div class="col-auto">
+                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-1"><label class="custom-control-label" for="formCheck-1"></label></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">11:30 AM</span></div>
+                                    <div class="col-auto">
+                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-2"><label class="custom-control-label" for="formCheck-2"></label></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">12:30 AM</span></div>
+                                    <div class="col-auto">
+                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-3"><label class="custom-control-label" for="formCheck-3"></label></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-primary shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Primary</p>
+                                    <p class="text-white-50 small m-0">#4e73df</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-success shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Success</p>
+                                    <p class="text-white-50 small m-0">#1cc88a</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-info shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Info</p>
+                                    <p class="text-white-50 small m-0">#36b9cc</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-warning shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Warning</p>
+                                    <p class="text-white-50 small m-0">#f6c23e</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-danger shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Danger</p>
+                                    <p class="text-white-50 small m-0">#e74a3b</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-white bg-secondary shadow">
+                                <div class="card-body">
+                                    <p class="m-0">Secondary</p>
+                                    <p class="text-white-50 small m-0">#858796</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+                   <!--Details Page-->
+           <div id="page-detail" class="container-fluid d-none page">
+             <!--             use this one next time
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 font-weight-bold">Details and RAC</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 text-nowrap">
+                                <div id="userDetailsTable_length" class="dataTables_length" aria-controls="dataTable"><label>Show&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm"><option value="10" selected="">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>&nbsp;</label></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-md-right dataTables_filter" id="userDetailsTable_filter"><label><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                            </div>
+                        </div>
+                        <div class="table-responsive table mt-2" id="userDetailTable" role="grid" aria-describedby="dataTable_info">
+                            <table class="table dataTable my-0" id="userDetailTable1">
+                                <thead>
+                                    <tr>
+                                        <th>Date Start</th>
+                                        <th>Detail Name</th>
+                                        <th>Indent Unit</th>
+                                        <th>RAC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>15/10/2019<br></td>
+                                        <td>Sembawang Wharves</td>
+                                        <td>9SIR Delta</td>
+                                        <td>pdficon 1 2 3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>15/10/2019<br></td>
+                                        <td>Sembawang Wharves</td>
+                                        <td>9SIR Delta</td>
+                                        <td>pdficon 1 2 3</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Date Start</strong></td>
+                                        <td><strong>Detail Name</strong></td>
+                                        <td><strong>Indent Unit</strong></td>
+                                        <td><strong>Date End</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 align-self-center">
+                                <p id="userDetailsTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
+                            </div>
+                            <div class="col-md-6">
+                                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                    <ul class="pagination">
+                                        <li class="page-item disabled"><a class="page-link" href="" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                                        <li class="page-item active"><a class="page-link" href="">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>            -->
+
+                    <div class="card shadow">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 font-weight-bold">Details and RAC</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        </div>
+                        <div class="table-responsive table mt-2" id="userDetailTable" role="grid" aria-describedby="dataTable_info">
+                            <table class="table dataTable my-0" id="userDetailTableInner">
+                                <thead>
+                                    <tr>
+                                        <th>Date Start</th>
+                                        <th>Detail Name</th>
+                                        <th>Indent Unit</th>
+                                        <th>RAC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Date Start</strong></td>
+                                        <td><strong>Detail Name</strong></td>
+                                        <td><strong>Indent Unit</strong></td>
+                                        <td><strong>RAC</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+               
+               
+               
+               
+             
+             
+            </div>      
+          
+          
+          
+          
+          
+          
+         
+          
+          
+          
+          </div>
+    <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+            <div class="text-center my-auto copyright"><span>(placeholder) Copyright © 3TPT 2019</span></div>
+        </div>
+    </footer>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+  
+    <div id="modal-create-rac" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Intro</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="height: 60vh; max-height: 600px; padding:0;overflow: hidden;">
+            <div id="modal-create-rac-panes" style="transform: translateX(0);width: 100%;height: 100%;display: flex; flex-direction: row;">
+              <div class="modal-pane" style="background-color:#4e73df;color: #FFF;justify-content: center;text-align: center;">
+                Follow the steps to create an RAC
+                <button class="btn btn-nextPane">
+                  <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem; color:#FFF;"></i>
+                </button>
+              </div>
+              <div class="modal-pane" style="justify-content: center;text-align: center;">
+                <h5>
+                  Driver's / Rider's Experience
+                </h5>
+                <table class="table" style="margin: 8px;width: calc(100% - 16px);">
+                  <thead>
+                    <tr><th>Driving</th><th>Riding</th><th></th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>CAT A/B</td><td>4000km & Above</td><td><input class="form-check-input" type="radio" name="drv-experience" value="low" /></td>
+                    </tr>
+                    <tr>
+                      <td>CAT C</td><td>1000km & Above</td><td><input class="form-check-input" type="radio" name="drv-experience" value="medium" /></td>
+                    </tr>
+                    <tr>
+                      <td>CAT D</td><td>Below 1000km</td><td><input class="form-check-input" type="radio" name="drv-experience" value="high" /></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">Never been trained/familiarised in vehicle that you are driving/riding</td><td><input class="form-check-input" type="radio" name="drv-experience" value="nomove" /></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">No JIT Done</td><td><input class="form-check-input" type="radio" name="drv-experience" value="nomove" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn btn-nextPane">
+                  <i class="far fa-arrow-alt-circle-right" style="font-size: 2.5rem;color:#4e73df;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <script src="/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/chart.min.js"></script>
+    <script src="/js/bs-charts.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="/js/theme.js"></script>
+  </body>
+  <script>
+    let detailData = [
+      ['15/10/2019', 'Sembawang Wharves', '9SIR Delta'],
+      ['16/10/2019', 'Sembawang Wharves', '7SIR Delta'],
+      ['17/10/2019', 'A Wharves', '8SIR Delta'],
+      ['18/10/2019', 'B Wharves', '7SIR Delta'],
+      ['19/10/2019', 'Sembawang Wharves', '1SIR Delta'],
+      ['20/10/2019', 'C Wharves', '5SIR Delta'],
+      ['21/10/2019', 'Sembawang Wharves', '9SIR Delta'],
+      ['22/10/2019', 'Sembawang Wharves', '5SIR Delta'],
+      ['23/10/2019', 'E Wharves', '4SIR Delta'],
+      ['23/10/2019', 'D Wharves', '7SIR Delta'],
+      ['24/10/2019', 'Sembawang Wharves', '8SIR Delta'],
+      ['24/10/2019', 'A Wharves', '9SIR Alpha'],
+      ['25/10/2019', 'F Wharves', '9SIR Alpha'],
+      ['26/10/2019', 'Sembawang Wharves', '9SIR Alpha']
+    ];
+    
+    document.body.onload = function(){
+      /*setTimeout(()=>{
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("wrapper").classList.remove ('d-none');
+      }, 1000);*/
+    
+      let cookies = document.cookie;
+      //token is first cookie
+      let tokenCookie = cookies.split(';')[0];
+      let token = tokenCookie.replace('access_token=','');
+      let show = new Event('show');
+      
+      initCreateModal();
+      
+      //load table
+      for(let i=0;i<detailData.length;i++){
+        const row = document.createElement('tr');
+        row.appendChild(createTextNode('td', detailData[i][0]));
+        row.appendChild(createTextNode('td', detailData[i][1]));
+        row.appendChild(createTextNode('td', detailData[i][2]));
+        const btnCell = document.createElement('td');
+        const createBtn = document.createElement('button');
+        createBtn.textContent = 'Create';
+        createBtn.className = 'btn btn-primary';
+        createBtn.onclick = function(){
+          $('#modal-create-rac').modal('show');
+        }
+        
+        const viewBtn = document.createElement('button');
+        viewBtn.textContent = 'View';
+        viewBtn.className = 'btn btn-secondary';
+        viewBtn.style.marginLeft = '4px';
+        btnCell.appendChild(createBtn);
+        btnCell.appendChild(viewBtn);
+        row.appendChild(btnCell);
+        document.getElementById('userDetailTableInner').children[1].appendChild(row);
+      }
+      
+      //jquery data table
+      $('#userDetailTableInner').DataTable({
+        "order":[0,'desc']
+      });
+      $('.dataTables_length').addClass('bs-select');
+      
+      
+      // var xhttp = new XMLHttpRequest();
+      // xhttp.onreadystatechange = function() {
+      //   if (this.readyState == 4 && this.status == 200) {
+      //     //Set fields with user data
+      //    document.getElementById("demo").innerHTML = this.responseText;
+      //   }
+      // };
+      // xhttp.open("GET", "ajax_info.txt", true);
+      // xhttp.send();
+      
+      
+      
+      
+      //Fetching user data (one time)
+      fetch('/me.json')
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+              return;
+            }
+            response.json().then(function(data) {
+              console.log(JSON.stringify(data));
+              //Set user variables here, can also set global elements
+              var userId = data.id;
+              var username = data.username;
+              if (data.rank){var rank = data.rank;}else{var rank = ""}
+              var name = data.name;
+              var node = data.node;
+              var isadmin = data.isadmin;
+              document.getElementById("name-holder").innerHTML=rank+" "+name;
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
+        });
+      
+      //Fetching data in interval (table updates, alerts etc)
+      /*setTimeout(()=>{
+        fetch('/intervalData.json')
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' +
+                response.status);
+              return;
+            }
+            response.json().then(function(data) {
+              console.log(JSON.stringify(data));
+              //Set user variables here, can also set global elements
+              var userId = data.id;
+              var username = data.username;
+              document.getElementById("name-holder").innerHTML=username;
+            });
+          }
+        )
+      },30000)*/
+      
+      
+      
+      
+      //Page swapping
+      
+      //Initial state
+      let state = {
+        "previousPage" : "index",
+        "currentPage" : "index"
+      };
+      (function initialize() {
+        window.history.replaceState(state, null, "");
+        
+        render(state);
+      })();
+      //Navbar links
+      var navHistory = document.querySelectorAll('.nav-link-history');
+      navHistory.forEach((nav)=>{
+        //alert(nav)
+        nav.addEventListener('click', navClick);
+      })
+      
+      //Custom event for page show
+      function pageShown(ev){
+        console.log('Page',ev.target.id,'was shown');
+      };
+      
+      //Pages
+      var pages = document.querySelectorAll('.page');
+      pages.forEach((pg)=>{
+        pg.addEventListener('show', pageShown);
+      })
+      
+      
+      
+      //Navigation function
+      function navClick(ev){
+        ev.preventDefault();
+        let href = ev.currentTarget.getAttribute("href");
+        if (href === state.currentPage){
+          return;
+        }
+        [state.previousPage,state.currentPage] = [state.currentPage,href];
+        
+        history.pushState(state,href,'');
+        //alert(JSON.stringify(state))
+        document.getElementById('nav-'+state.previousPage).classList.remove('active');
+        document.getElementById('nav-'+state.currentPage).classList.add('active');
+        document.querySelector('.currentPage').classList.add('d-none');
+        document.querySelector('.currentPage').classList.remove('currentPage');
+        document.getElementById('page-'+state.currentPage).classList.remove('d-none')
+        document.getElementById('page-'+state.currentPage).classList.add('currentPage')
+        var title = ' - 3TPT'
+        switch (state.currentPage){
+          case "index":
+            title = "Dashboard" + title;
+            break;
+          default:
+            title = state.currentPage.charAt(0).toUpperCase() + state.currentPage.slice(1) + title;
+        }
+        
+        
+        try {
+            document.getElementsByTagName('title')[0].innerHTML = title.replace('<','&lt;').replace('>','&gt;').replace(' & ',' &amp; ');
+        }
+        catch (e) { }
+        document.title = title;
+        render(state);        
+      }    
+      
+      //On Back
+      window.onpopstate = function(event) {
+        //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+        state = event.state
+        document.getElementById('nav-'+state.previousPage).classList.remove('active');
+        document.getElementById('nav-'+state.currentPage).classList.add('active');
+        document.querySelector('.currentPage').classList.add('d-none');
+        document.querySelector('.currentPage').classList.remove('currentPage');
+        document.getElementById('page-'+state.currentPage).classList.remove('d-none');
+        document.getElementById('page-'+state.currentPage).classList.add('currentPage');
+        render(state);
+      };
+      
+      
+      function render(){
+        //we can render data here
+        document.getElementById('page-'+state.currentPage).dispatchEvent(show);     
+      }
+    }
+    
+    function initCreateModal(){
+      const modalPanes = document.getElementById('modal-create-rac-panes');
+      const nextButtons = modalPanes.getElementsByClassName('btn-nextPane');
+      for(let i=0;i<nextButtons.length;i++){
+        nextButtons[i].onclick = function(){
+          const curTranslate = parseInt(modalPanes.style.transform.split('(')[1].split(')')[0].replace('%', ''));
+          modalPanes.style.transform = 'translateX(' + (curTranslate - 100) + '%)';
+        }
+      }
+    }
+    
+    function createTextNode(type, content){
+      const ret = document.createElement(type);
+      ret.textContent = content;
+      return ret;
+    }
+    
+  </script>
+</html>

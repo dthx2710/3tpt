@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, shrink-to-fit=no">
+  <title>QR Verification - 3TPT</title>
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="180x180" href="/img/favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/jpeg" sizes="440x332" href="/img/5ton.jpg">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+  <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/css/Data-Table-1.css">
+  <link rel="stylesheet" href="/css/Data-Table.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/r-2.2.3/datatables.min.css" />
+  <style>
+    pre {
+    white-space: pre-line;       /* Since CSS 2.1 */
+    white-space: -moz-pre-line;  /* Mozilla, since 1999 */
+    white-space: -pre-line;      /* Opera 4-6 */
+    white-space: -o-pre-line;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+    
+    .title{
+      font-size: 140%;
+    }
+    h5{
+      font-size: 110%;
+      font-weight: bold;
+    }
+    h5 span{
+      font-size: 100%;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body style="background-color:#ffffff;">
+  <div class="container-fluid" style="display:flex;justify-content:center;align-items:center;">
+    <div class="card shadow" style="margin:20px 0; width:1000px;text-align:center;">
+      <div class="card-header py-3">
+        <p class="text-primary m-0 font-weight-bold title"><span id="usertype">{User Type}</span> QR Approval</p>
+      </div>    
+      <div class="card-body py-3" style="text-align: left; padding:25px">
+        <!--
+        <h5>Transport Operator: <span id="name">{Name}</span></h5>
+        <h5>Detail ID: <span id="detailid">{id}</span></h5>
+        <h5>From: <span id="from">{from}</span></h5>
+        <h5>To: <span id="to">{to}</span></h5>-->
+        <div style="margin-left:10px">
+          <h5>QR Created: <span id="timestamp">{timestamp}</span></h5>
+        </div>
+        
+        <table class="table " id="qrtable">
+            <tbody id = "qr-table-body">
+            </tbody>
+        </table>
+        <!--
+        <div>
+        <h5>Overall Risk:   <span id="overall-risk">{Risk}</span></h5>
+        </div>
+        <div>
+          <pre id="takenote"></pre>
+        </div>-->
+        <hr>
+        
+        
+        <div id="userofficer" style="display:none;">
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="alsovcchk">
+              <label class="form-check-label" for="alsovcchk">I am also the Vehicle Commander for this detail</label>
+            </div>
+            <div id="officerchecklist" style="display:none;">
+              <br>
+              <h5 style="font-weight:bold;">Risk Assessment Checklist</h5>
+              <h7>Tick wherever applicable</h7>
+              <table class="table my-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th colspan="2">Description</th>
+                    <th>Vcom</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="2">Driver is licensed to operate the vehicle and has displayed Military driving permit on dashboard</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Gone through intended route with SAF driver</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Ensure the driver does not exceed the vehicle or road speed limit</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Assist / warn driver of obstruction, hazard or danger</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Warn driver during reversing or movement towards congested or narrow space</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Ensure no admin movement during no-move timings (0730-0930 hrs / 1730-1930 hrs)</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Brief and ensure troops secure their seat belts before movement of vehicle</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Check and ensure safety straps in place and tailboard of vehicle is closed</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Brief troops on no sleeping / smoking on the vehicle before movement of vehicle</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">Secure load before movement of vehicle</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="" disabled>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">If involved in an accident, to contact parent unit, Transport Node and Police</td>
+                    <td style="position: relative;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                    <td style="position: relative;display:none;">
+                      <input class="officercheckbox" type="checkbox" value="">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <form id="officerForm" novalidate>
+              <div class="form-row">
+                <!--
+                <div class="form-group col-4">
+                  <input type="text" class="form-control" id="officerrank" name="officerrank" placeholder="Rank" required>
+                </div>
+                <div class="form-group col-8">
+                  <input type="text" class="form-control" id="officername" name="officername" placeholder="Name" required>
+                </div>
+-->
+                <div class="form-group col">
+                  <input type="text" class="form-control" id="officername" name="officername" placeholder="Name" required>
+                </div>
+              </div>
+              <div class="form-group" id="officersafetymeasures">
+                <textarea type="text" class="form-control" id="officermitigation" name="officermitigation" placeholder="Please elaborate on the safety or risk mitigating measures taken" required></textarea>
+              </div>
+            </form>
+        </div>
+          
+          
+          
+          <div id="uservcom" style="display:none;">
+            <div >
+              <h5 style="font-weight:bold;display:inline-block;"> Standing Orders </h5>
+              <a style="display:inline-block;margin-left:20px" href="https://cdn.glitch.com/f8b62283-ccac-4a89-b0d8-991d640eb2ba%2F5gomGFZ.png?v=1573291454015"
+              class="btn btn-sm btn-info" target="_blank">View</a>
+            </div>
+            <hr>
+            <h5 style="font-weight:bold;">Risk Assessment Checklist</h5>
+            <h7>Tick wherever applicable</h7>
+            <table class="table my-0" id="vcomchecklist">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="2">Description</th>
+                  <th>Vcom</th>
+                  <th>FP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2">Driver is licensed to operate the vehicle and has displayed Military driving permit on dashboard</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Gone through intended route with SAF driver</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Ensure the driver does not exceed the vehicle or road speed limit</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Assist / warn driver of obstruction, hazard or danger</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Warn driver during reversing or movement towards congested or narrow space</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Ensure no admin movement during no-move timings (0730-0930 hrs / 1730-1930 hrs)</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Brief and ensure troops secure their seat belts before movement of vehicle</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Check and ensure safety straps in place and tailboard of vehicle is closed</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Brief troops on no sleeping / smoking on the vehicle before movement of vehicle</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Secure load before movement of vehicle</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="" disabled>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">If involved in an accident, to contact parent unit, Transport Node and Police</td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                  <td style="position: relative;">
+                    <input class="vcomcheckbox" type="checkbox" value="">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <form id="vcomForm" novalidate>
+              <div class="form-row">
+                <!--
+                <div class="form-group col-4">
+                  <input type="text" class="form-control" id="vcomrank" name="vcomrank" placeholder="Rank" required>
+                </div>
+                <div class="form-group col-8">
+                  <input type="text" class="form-control" id="vcomname" name="vcomname" placeholder="Name" required>
+                </div>
+-->
+                <div class="form-group col">
+                  <input type="text" class="form-control" id="vcomname" name="vcomname" placeholder="Name" required>
+                </div>
+              </div>
+              <div class="form-group" id="vcomsafetymeasures">
+                <textarea type="text" class="form-control" id="vcommitigation" name="vcommitigation" placeholder="Please elaborate on the safety or risk mitigating measures taken" required></textarea>
+              </div>
+            </form>
+          </div>
+          
+          
+          
+          
+          <div id="userdp" style="display:none;">
+            <form>
+              <div class="form-row">
+                <!--
+                <div class="form-group col-4">
+                  <input type="text" class="form-control" id="dprank" name="dprank" placeholder="Rank" required>
+                </div>
+                <div class="form-group col-8">
+                  <input type="text" class="form-control" id="dpname" name="dpname" placeholder="Name" required>
+                </div>
+-->             <div class="form-group col">
+                  <input type="text" class="form-control" id="dpname" name="dpname" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="dptime" name="dptime" onfocus="(this.type='time')" placeholder="Dispatch/Release Time">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row">          
+            <btn class="btn btn-sm btn-danger col" id="rejectBtn" style="margin: 20px 10px 0 10px">
+              Reject
+            </btn>
+            <btn class="btn btn-sm btn-success col" id="approveBtn" style="margin: 20px 10px 0 10px">
+              Approve
+            </btn>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="popupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body" id="popup-modal-body">
+          <h2>
+            MT-RAC has been <span id="status">{status}</span>
+          </h2>
+          <h4 id="reason">
+          </h4>
+          <hr>
+          <h5 style="text-align:center">
+            Please close this browser tab
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+</body>
+</html>
+<script src="/js/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script>
+  //global variables
+  var userTypeNameArray = ['Officer','Vehicle Commander / Front Passenger','Dispatcher / Releaser']
+  var userTypeShortArray = ['officer','vcom','dp']
+  
+  window.addEventListener("DOMContentLoaded", (event) => {
+    const usertypeSpan = document.getElementById("usertype");
+    // const nameSpan = document.getElementById("name");
+    // const detailidSpan = document.getElementById("detailid");
+    // const fromSpan = document.getElementById("from");
+    // const toSpan = document.getElementById("to");
+    const timestampSpan = document.getElementById("timestamp");
+    // const riskSpan = document.getElementById("overall-risk");
+    // const notePre = document.getElementById("takenote");
+    const rejectBtn = document.getElementById("rejectBtn");
+    const approveBtn = document.getElementById("approveBtn");
+    const officerdiv = document.getElementById("userofficer");
+    const vcomdiv = document.getElementById("uservcom");
+    const dpdiv = document.getElementById("userdp");
+    const racid = data.rac.Id
+    
+    $('#alsovcchk').change(function() {
+        $('#officerchecklist').toggle(500);       
+    });
+    
+    const getUserParam = async (params, callback) =>{
+      let response = await fetch("/user/"+params[0]+"/"+params[1])
+      let data = await response.json();
+      return data;
+    }   
+
+    const riskLevels = ['Low', 'Medium', 'High', 'No Move'];
+    const riskColor = {'Low':'green','Medium':'orange','High':'red','No Move':'black'}
+    
+    const usertype = data.usertype;
+    
+    async function showRAC(){
+      const {Id, userid, timestamp, detailid, journeyfrom, journeyto, vehno, avidate, risk, drvexperience, vehtype, fatigue, health, weather, familiarity, mission, novcom, servicibility, officername, officermitigation, vcomname, vcommitigation, dpname, dptime, tochecklist} = data.rac
+      //let TOrank = await getUserParam([userid,'rank'])
+      let TOname = await getUserParam([userid,'name'])
+      //console.log(TOrank,TOname)
+      const qrtimestamp = data.timestamp;
+      var qrdate = new Date(parseInt(qrtimestamp))
+      var qrtime = qrdate.toString()
+      var createddate = new Date(parseInt(timestamp))
+      var datetime = createddate.toString()
+      
+      const formedArray = [drvexperience, vehtype, fatigue, health, weather, familiarity, mission, novcom, servicibility]
+      
+      const riskMapping = {
+        'drvexperience':{
+          'Title':"Driver's or Rider's Experience",
+          'Low':"Cat A/B or above 4000km",
+          'Medium':"Cat D or above 1000km",
+          'High':"Cat D or below 1000km",
+          'No Move':"Not trained/familiarised on vehicle",
+          'No Move':"No JIT where applicable"
+        },
+        'vehtype':{
+          'Title':"Vehicle / Motorcycle Type",
+          'Low':"Same vehicle operated within 10 days",
+          'Low':"Class 3 or 200CC",
+          'Medium':"Class 4 or 800CC"
+        },
+        'fatigue':{
+          'Title':"Length of Rest",
+          'Low':"More than 7 hours",
+          'Medium':"Less than 7 hours (In camp/Home)",
+          'High':"Less than 7 hours (Field)",
+          'No Move':"Less than 4 hours (Field)"
+        },
+        'health':{
+          'Title':"Health",
+          'Low':"Good",
+          'Medium':"Fair (Just recovered from illness)",
+          'No Move':"Poor (Ill or still under medication that cause drowsiness)"
+        },
+        'weather':{
+          'Title':"Weather",
+          'Low':"Dry",
+          'Medium':"Wet",
+          'High':"Heavy Rain"
+        },
+        'familiarity':{
+          'Title':"Route Familiarity",
+          'Low':"Familiar",
+          'High':"Unfamiliar even after route brief done",
+          'No Move':"Unfamiliar as route brief is not done"
+        },
+        'mission':{
+          'Title':"Mission",
+          'Low':"Admin",
+          'Medium':"Training/Operations(Including towing)",
+          'High':"All administrative towing"
+        },
+        'novcom':{
+          'Title':"Without Vehicle Commander",
+          'Low':"Cat A/B",
+          'Medium':"Cat C",
+          'High':"Cat D",
+          'N/A':"Vehicle Commander Present"
+        },
+        'servicibility':{
+          'Title':"Vehicle / Motorcycle Serviceability",
+          'Low':"No fault",
+          'Medium':"",
+          'High':"Minor Fault",
+          'No Move':"Major Fault"
+        }
+      }
+      
+      //do DOM manipulation racmodal
+      let racTable = document.getElementById('qr-table-body')
+
+      //TO Name
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"Transport Operator"),
+          // createElement('td',{},TOrank.rank+" "+ TOname.name)
+          createElement('td',{},TOname.name)
+         )
+      )
+
+      //timestamp
+
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"Created On"),
+          createElement('td',{},datetime)
+         )
+      )
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"Overall Risk"),
+          createElement('td',{},risk)
+         )
+      )
+
+      //detailid
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"Detail ID"),
+          createElement('td',{},detailid)
+         )
+      )
+
+      //from
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"From"),
+          createElement('td',{},journeyfrom)
+         )
+      )
+
+      //to
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"To"),
+          createElement('td',{},journeyto)
+         )
+      )
+
+      //vehno
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"Vehicle No."),
+          createElement('td',{},"MID "+vehno)
+         )
+      )
+      
+      //avidate
+      racTable.appendChild(
+        createElement('tr',{},
+          createElement('th',{},"Last AVI Date"),
+          createElement('td',{},avidate)
+         )
+      )
+
+      const formKeys = Object.keys(riskMapping)
+      for(let i = 0; i < formKeys.length; i++){
+        racTable.appendChild(
+          createElement('tr',{},
+            createElement('th', {},riskMapping[formKeys[i]]['Title']),
+            //createElement('td', {}, riskMapping[formKeys[i]][formedArray[i]]),
+            createElement('td', {}, formedArray[i]),
+           )
+        )
+      }
+      
+
+      timestampSpan.textContent = qrtime;
+      
+      //$("p:contains(is)")
+      //change risk color
+      
+
+      for (let i=0; i<=riskLevels.length-1; i++){
+        let riskElement = $("td:contains("+riskLevels[i]+")")
+        riskElement.css("color", riskColor[riskLevels[i]]);
+        riskElement.css("font-weight", "Bold");
+        riskElement.css("font-size", "120%");
+      }
+    }
+    
+    
+    var reason;
+    var approve;
+
+    
+    var userTypeName = userTypeNameArray[usertype-1];
+    var userTypeShort = userTypeShortArray[usertype-1];
+    
+    //click event
+    $('#rejectBtn').on("click", reject)
+    $('#approveBtn').on("click", approve)
+    
+    // Label Setters
+    var userTypeName;
+    var userTypeShort;
+    console.log('Usertype: '+usertype,typeof usertype)
+    switch (usertype){
+      case '1':
+        officerdiv.style="display:block";
+        break;
+      case '2':
+        vcomdiv.style="display:block";
+        break;
+      case '3':
+        dpdiv.style="display:block";
+        break;
+    }
+    if (!usertype || usertype == 'undefined'){
+      alert("Error, please try again");
+      usertypeSpan.textContent = "ERROR";
+    }
+    else{
+      usertypeSpan.textContent = userTypeName;
+    }
+    
+    
+    showRAC()
+    
+    
+    // nameSpan.textContent = TORank+" "+TOName;
+    // detailidSpan.textContent = detailId;
+    // fromSpan.textContent = from;
+    // toSpan.textContent = to;
+    // var qrtime = new Date(parseInt(timestamp))
+    // timestampSpan.textContent = qrtime;
+    // riskSpan.textContent = risk;
+    // riskSpan.style="font-size:140%;font-weight:bolder;color:"+riskcolor+";"
+    // notePre.textContent = note;
+    
+    function reject(){
+      reason = prompt("Please state the reason for rejection:","Reason...");
+      if (reason == null || reason == "") {
+        reason = "User cancelled the prompt.";
+      } else {
+        approve = false;
+        if (reason == "Reason..."){
+          reason = "Unspecified"
+        }
+        $('#rejectBtn').off('click')
+        $('#approveBtn').off('click')
+        $('#status').text("Rejected")
+        $('#status').css("color","red")
+        $('#reason').text("Reason: "+reason)
+        $('#popupModal').modal({backdrop: 'static', keyboard: false}) 
+        postReplyData();
+      }
+    }
+
+    function approve(){
+      // if (document.getElementById(userTypeShort+'rank').value==""||document.getElementById(userTypeShort+'name').value==""){
+      //   alert('Rank & Name must be filled!')
+      //   return
+      // }
+      if (document.getElementById(userTypeShort+'name').value==""){
+        alert('Name must be filled!')
+        return
+      }
+      if (userTypeShort=='officer'||userTypeShort=='vcom'){
+        
+        let mitigation = document.getElementById(userTypeShort+'mitigation').value
+        let highriskElement = $("td:contains(High)")
+        let nomoveElement = $("td:contains(No Move)")
+        if(nomoveElement.text()!=""){
+          alert('As this MT-RAC is NO MOVE risk, it cannot be approved!')
+          return
+        }
+        if(highriskElement.text()!=""&&mitigation==""){
+          alert('As this MT-RAC is HIGH risk, please fill up mitigation measures!')
+          return
+        }
+      }
+      
+      approve = true;
+      $('#rejectBtn').off('click')
+      $('#approveBtn').off('click')
+      $('#status').css("color","green")
+      $('#status').text("Approved")
+      $('#popupModal').modal({backdrop: 'static', keyboard: false}) 
+      postReplyData();
+    }  
+    
+    function postReplyData(){
+      
+        // const tocheckboxArray = document.getElementsByClassName('tocheckbox')
+        // let tochecklist = ''
+        // Array.prototype.forEach.call(tocheckboxArray, function(cbox) {
+        //   if (cbox.checked){
+        //     tochecklist+='1'
+        //   }
+        //   else{tochecklist+='0'}
+        // })
+
+        //$('#alsovcchk').prop('checked')
+      
+      
+      var mitigation
+      var time
+      var alsovcom = false
+      var checklist = ""
+      if (userTypeShort == 'dp'){time=document.getElementById("dptime").value}
+      else{
+        mitigation=document.getElementById(userTypeShort+'mitigation').value
+        if (userTypeShort == 'officer'){
+          if($('#alsovcchk').prop('checked')){
+            alsovcom = true
+            const officercheckboxArray = document.getElementsByClassName('officercheckbox')
+            Array.prototype.forEach.call(officercheckboxArray, function(cbox) {
+              if (cbox.checked){
+                checklist+='1'
+              }
+              else{checklist+='0'}
+            })
+          }
+        }
+        else if (userTypeShort == 'vcom'){
+          const vcomcheckboxArray = document.getElementsByClassName('vcomcheckbox')
+          Array.prototype.forEach.call(vcomcheckboxArray, function(cbox) {
+            if (cbox.checked){
+              checklist+='1'
+            }
+            else{checklist+='0'}
+          })
+        }
+      }
+      
+      var data = {
+        "scanned":true,
+        "approved":approve,
+        //"rank":document.getElementById(userTypeShort+'rank').value,
+        //"rank":"",
+        "name":document.getElementById(userTypeShort+'name').value,
+        "mitigation":mitigation,
+        "time":time,
+        "alsovcom":alsovcom,
+        "checklist":checklist
+      }
+
+      if (!approve){
+        data['reason'] = reason;
+      }
+      console.log(data)
+
+      postData('/qrreply/'+userTypeShort+'/'+racid+'/'+timestamp,data)
+      .then((data) => {
+        console.log("data sent:",data);
+        if(!approve){
+        }else{
+        }
+      });
+    }
+    
+  });
+
+
+  // Example POST method implementation:
+  async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.text(); // parses JSON response into native JavaScript objects
+  }
+
+  function createElement(type, props){
+      const ret = document.createElement(type);
+      recursiveSet(ret, props);
+
+      if(arguments.length > 2){
+        for(let i=2;i<arguments.length;i++){
+          if(typeof(arguments[i]) === 'string' || typeof(arguments[i]) === 'number')
+            ret.textContent = arguments[i];
+          else if(typeof(arguments[i]) === 'object')
+            ret.appendChild(arguments[i]);
+        }
+      }
+
+      return ret;
+    }
+  function recursiveSet(node, props){
+      const keys = Object.keys(props);
+      for(let i=0;i<keys.length;i++){
+        const k = keys[i];
+        if(k === 'attributes'){
+          recursiveSetAttribute(node, props[k]);
+        }else if(typeof(props[k]) === 'object'){
+          recursiveSet(node[k], props[k]);
+        }else{
+          node[k] = props[k];
+        }
+      }
+    }
+
+    function recursiveSetAttribute(node, props){
+      const keys = Object.keys(props);
+      for(let i=0;i<keys.length;i++){
+        const k = keys[i];
+        node.setAttribute(k, props[k]);
+      }
+    }
+
+</script>
