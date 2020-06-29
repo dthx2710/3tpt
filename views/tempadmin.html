@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <body>
+    </body>
+  </head>
+  
+</html>
+
+<script>
+window.addEventListener("DOMContentLoaded", (event) => {
+  var auth = prompt('Authkey')
+  var menu = prompt('1. Create User  2. Delete RAC  3. Delete User  4. Add Rac Col')
+  switch (menu){
+    case '1':
+      let username = prompt('Username (persid)')
+      let name = prompt("Name")
+      let birthdate = prompt("6D Birthdate (e.g. 271098)")
+      let shortnric = prompt("Short NRIC (e.g. 356I)")
+      let node = prompt("Node (lowercase)")
+      if (!username||!name||!birthdate||!shortnric||!node){
+        break
+      }
+      var data = {
+        'username':username,
+        'name':name,
+        'birthdate':birthdate,
+        'shortnric':shortnric,
+        'node':node
+      }
+      if (window.confirm(`Confirm creation of user ${name}?      username: ${username}  name: ${name}  birthdate: ${birthdate}  shortnric: ${shortnric}  node: ${node}`)) { 
+        postData('/createuser/'+auth,data)
+        .then((data) => {
+          console.log("data sent:",data);
+          alert('User Created')
+        });
+      }
+      break
+    case '2':
+      let racid = prompt('RAC ID')
+      if (!racid){
+        break
+      }
+      fetch('delrac/'+racid+'/'+auth)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+        alert("RAC Deleted")
+      });
+      
+      break
+    case '3':
+      let persid = prompt('Username (persid)')
+      if (!persid){
+        break
+      }
+      fetch('deluser/'+persid+'/'+auth)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+        alert("User Deleted")
+      });
+      break
+    case '4':
+      let colname = prompt("Column Name")
+      let datatype = prompt("Data type")
+      fetch('addraccol/'+colname+'/'+datatype+'/'+auth)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+        alert("Rac col added")
+      });
+      break
+    default:
+      alert('k bb')
+      break
+  }
+    // Example POST method implementation:
+  async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.text(); // parses JSON response into native JavaScript objects
+  }
+  
+})
+
+</script>

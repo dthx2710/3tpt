@@ -1,0 +1,14 @@
+{
+  "short_name": "3TPT",
+  "name": "3 Transport Battalion Webapp",
+  "icons": [
+    {
+      "src": "/img/favicon/android-icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    { "src": "/img/5ton.jpg", "type": "image/jpeg", "sizes": "440x332" }
+  ],
+  "start_url": "/index",
+  "display": "fullscreen"
+}
