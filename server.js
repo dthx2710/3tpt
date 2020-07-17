@@ -100,7 +100,7 @@ db.serialize(function(){
     if (!exists) {
       db.run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 1, 'admin', sha256('admintest'+'abcd'), 'abcd', 'ADMIN', '010190', '123a', 'cln', 1)
       .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 2, 'UserA', sha256('password'+'12a'), '12a', 'UserA', '010190', '123a', 'cln', 0)
-      .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 3, '11082840', '5704966058ac4ce546c8a62f551b0f75f19bb6fce9135f3d70c7fef9624ee06e', '256b53ddbca6948ff3a3e18d310e3dcf0fa639d1f226dc785042c8b9fe34ef58', 'Dylan Tok Hong Xun', '271098', '356i', 'cln', 0)
+      .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 3, '11082840', '5704966058ac4ce546c8a62f551b0f75f19bb6fce9135f3d70c7fef9624ee06e', '256b53ddbca6948ff3a3e18d310e3dcf0fa639d1f226dc785042c8b9fe34ef58', 'Dylan Tok Hong Xun', 'obsf', 'obsf', 'cln', 0)
       .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 4, 'sharpie', sha256('password'+'abcd'), 'abcd', 'ZH HO', '010198', '123a', 'cln', 0);
 
       /*
@@ -620,7 +620,7 @@ app.post('/createrac/:username', (req, res) =>{
 
 app.post('/createuser/:auth', (req, res) =>{
   const key = req.params.auth;
-  if (key != "dolicon"){res.status(400).send({error:'Bad Request'});}
+  if (key != "redacted"){res.status(400).send({error:'Bad Request'});}
   else{
   const data = req.body;
   const {username,name,birthdate,shortnric,node} = data
@@ -639,7 +639,7 @@ app.post('/createuser/:auth', (req, res) =>{
 
 app.get('/deluser/:username/:auth', (req, res) =>{
   const key = req.params.auth;
-  if (key != "dolicon"){res.status(400).send({error:'Bad Request'});}
+  if (key != "redacted"){res.status(400).send({error:'Bad Request'});}
   else{
     const username = req.params.username;
     db.run('DELETE FROM Users WHERE username=?', username, function(err) {
@@ -655,7 +655,7 @@ app.get('/deluser/:username/:auth', (req, res) =>{
 app.get('/delrac/:racid/:auth', (req,res) =>{
   const key = req.params.auth;
   const racid = req.params.racid;
-  if (key != "dolicon"){res.status(400).send({error:'Bad Request' });}
+  if (key != "redacted"){res.status(400).send({error:'Bad Request' });}
   db.run('DELETE FROM Rac WHERE Id=?', racid, function(err) {
   if (err) {
     return console.error(err.message);
@@ -668,7 +668,7 @@ app.get('/addraccol/:colname/:datatype/:auth', (req,res) =>{
   const key = req.params.auth;
   const colname = req.params.colname;
   const datatype = req.params.datatype;
-  if (key != "dolicon"){res.status(400).send({error:'Bad Request' });}
+  if (key != "redacted"){res.status(400).send({error:'Bad Request' });}
   addRacColumn(colname,datatype).catch((err)=>console.log("Adding column Error: "+err)).then(()=>res.status(200).send({'msg':'Added column'}))
 })
 
