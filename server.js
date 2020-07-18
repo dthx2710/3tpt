@@ -98,10 +98,11 @@ db.serialize(function(){
   // })
   .then(() => {
     if (!exists) {
-      db.run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 1, 'admin', sha256('admintest'+'abcd'), 'abcd', 'ADMIN', '010190', '123a', 'cln', 1)
-      .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 2, 'UserA', sha256('password'+'12a'), '12a', 'UserA', '010190', '123a', 'cln', 0)
+     // user, pw, salt, rank, bday, shortnric, node, isadm
+      db.run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 1, 'admin', sha256('redacted'+'redacted'), 'redacted', 'ADMIN', '010190', '123a', 'cln', 1)
+      .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 2, 'UserA', sha256('redacted'+'redacted'), 'redacted', 'UserA', '010190', '123a', 'cln', 0)
       .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 3, '11082840', '5704966058ac4ce546c8a62f551b0f75f19bb6fce9135f3d70c7fef9624ee06e', '256b53ddbca6948ff3a3e18d310e3dcf0fa639d1f226dc785042c8b9fe34ef58', 'Dylan Tok Hong Xun', 'obsf', 'obsf', 'cln', 0)
-      .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 4, 'sharpie', sha256('password'+'abcd'), 'abcd', 'ZH HO', '010198', '123a', 'cln', 0);
+      .run('INSERT INTO Users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', 4, 'sharpie', sha256('redacted'+'redacted'), 'redacted', 'ZH HO', '010198', '123a', 'cln', 0);
 
       /*
       db.run('INSERT INTO Users (username, password, salt, rank, name, birthdate, shortnric, node) VALUES ("admin", "'+sha256('admintest'+'abcd')+'", "abcd","","","","","","1"), ("UserA", "'+sha256('password'+'efgh')+'", "efgh","","","","","","1"), ("11082840","5704966058ac4ce546c8a62f551b0f75f19bb6fce9135f3d70c7fef9624ee06e","256b53ddbca6948ff3a3e18d310e3dcf0fa639d1f226dc785042c8b9fe34ef58"+"LCP","Dylan Tok Hong Xun","271098","356i","cln","0")');*/
@@ -203,7 +204,7 @@ app.post('/login', function(request, response){
   const pwd = request.body.password;
   
   if(username === undefined || pwd === undefined || username === '' || pwd === ''){
-    response.status(400).redirect('/login');
+    response.status(400)..irect('/login');
     console.log('Login validation');
     return;
   }
