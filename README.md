@@ -1,7 +1,7 @@
 Electronic Risk Assessment Checklist
 =================
 
-A  “Smart” MTRAC form WebApp:
+A  “Smart” MTRAC form WebApp, built with vanilla JS, supported with nodeJS:
 - Digitalization of the existing MTRAC form system
 - Implemented as a WebApp
 - An one-stop portal
