@@ -9,6 +9,6 @@ A  “Smart” MTRAC form WebApp:
 - Viable for future expansions
 - Multi-platform compatibility
 
-https://3tpt.glitch.me/
+[Demo Site](https://3tpt.glitch.me/)
 
 [Proof of Concept Slides](https://docs.google.com/presentation/d/1I3VTpmSq70egS1yNaVYm6oNYXnQSZ7QgMhNkMuqav7A/edit)
