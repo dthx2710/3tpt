@@ -1,13 +1,8 @@
 Electronic Risk Assessment Checklist
 =================
+e-MTRAC Management System for SAF 3rd Transport Battalion - an effort to digitalize the current MT-RAC system, as a lightweight and paperless alternative solution
 
-A  “Smart” MTRAC form WebApp, built with vanilla JS, supported with nodeJS:
-- Digitalization of the existing MTRAC form system
-- Implemented as a WebApp
-- An one-stop portal
-- Componentialised system
-- Viable for future expansions
-- Multi-platform compatibility
+Built with vanilla JS, supported with nodeJS
 
 [Demo Site](https://3tpt.glitch.me/)
 
