@@ -2,12 +2,12 @@ Electronic Risk Assessment Checklist
 =================
 
 A  “Smart” MTRAC form WebApp:
-Digitalization of the existing MTRAC form system
-Implemented as a WebApp
-An one-stop portal
-Componentialised system
-Viable for future expansions
-Multi-platform compatibility
+- Digitalization of the existing MTRAC form system
+- Implemented as a WebApp
+- An one-stop portal
+- Componentialised system
+- Viable for future expansions
+- Multi-platform compatibility
 
 https://3tpt.glitch.me/
 
